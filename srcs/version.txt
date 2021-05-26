@@ -1,0 +1,6 @@
+
+Minishell, version 1.0 (x86_64-apple-darwin18)
+
+Usage:	bash [option] ...
+Options:
+	-help
