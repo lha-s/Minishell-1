@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: alganoun <alganoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/05/22 15:07:28 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/05/27 15:49:04 by alganoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,28 @@ int		display_txt(char *str)
 	return (0);
 }
 
-
-int		input_process(char *line, t_cmd **cmd)
+int		input_process(char **tab, t_token **token_list)
 {
-	int			i;
-	t_prcess	*current;
+	int i;
+
 	i = 0;
-	if (((*cmd)->cmdline = ft_split(line, ';')) == NULL)
+	while (tab[i] != NULL)
+	{
+
+	}
+	return (0);
+}
+
+int		parsing(char *line, t_token **token_list)
+{
+	int		i;
+	char	**tab;
+
+	i = 0;
+	// fonction de gestion d'erreurs
+	if (!(tab = ft_split(line, ';')) == NULL)
 		return (write_errors(3, NULL));
-	init_cmds(cmd);
+	input_process(tab, token_list);
 	return(0);
 }
 
@@ -55,7 +68,7 @@ int		main(/*int argc, char **argv, char **data*/)
 	int ret;
 	//int	fd;
 	char *line;
-	t_token token;
+	t_token *token;
 
 	ret = 1;
 	if(init_struct(&token) == -1)
@@ -66,8 +79,9 @@ int		main(/*int argc, char **argv, char **data*/)
 	{
 		write(1, "[minishell-1.0$ ", 16);
 		get_next_input(&line);
-		if (input_process(line, &token) == -1)
+		if (parsing(line, &token) == -1)
 			return(-1);
+		//execution_commandes(envcopy)
 		safe_free(&line);
 	}
 	safe_free(&line);
