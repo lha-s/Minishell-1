@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: alganoun <alganoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 08:00:40 by alganoun          #+#    #+#             */
-/*   Updated: 2021/03/08 17:06:11 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/05/28 14:55:07 by alganoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,17 @@
 // 	return (nb);
 //}
 
-int command_identifier(char *str)
+int		is_option(char *str)
 {
-	int i;
-
-	i = 0;
-	if 
+	if (str[0] == '"' || str[0] == '\'')
+		if (str[1] == '-')
+			return (1);
+	else if (str[0] == '-')
+		return (1);
+	return (0);
 }
 
-int		quotes_checker(char *str) // 	est ce que cette fonction va servir 
+int		quotes_checker(char *str) // 	est ce que cette fonction va servir
 {
 	int	i;
 
@@ -56,4 +58,4 @@ int		quotes_checker(char *str) // 	est ce que cette fonction va servir
 			return (-1);
 	}
 	return (0);
-} 
+}

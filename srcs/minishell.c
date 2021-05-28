@@ -6,7 +6,7 @@
 /*   By: alganoun <alganoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/05/27 15:49:04 by alganoun         ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 17:11:28 by alganoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int		input_process(char **tab, t_token **token_list)
 	while (tab[i] != NULL)
 	{
 
+		i++;
 	}
 	return (0);
 }
