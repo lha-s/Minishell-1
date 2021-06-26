@@ -3,36 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   get_next.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alganoun <alganoun@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:19:07 by alganoun          #+#    #+#             */
-/*   Updated: 2021/05/27 13:14:22 by alganoun         ###   ########lyon.fr   */
+/*   Updated: 2021/06/23 13:21:17 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_next_word(char *line)
-{
-	int i;
-	char *word;
-
-	i = 0;
-	ft_rm_whitespace(&line);
-	if (line[0] == '"')
-		while (line[i] && line[i] != '"')
-			i++;
-	else if (line[0] == '\'')
-		while (line[i] && line[i] != '\'')
-			i++;
-	else
-		while (line[i] && (line[i] <= 9 || line[i] >= 13) && line[i] != 32)
-			i++;
-	if (!(word = malloc(i + 1)))
-		return (NULL);
-	ft_strlcpy(word, line, i + 1);
-	return (word);
-}
+//char	*get_next_word(char *line)
+//{
+//	int i;
+//	char *word;
+//
+//	i = 0;
+//	ft_rm_whitespace(&line);
+//	if (line[0] == '"')
+//		while (line[i] && line[i] != '"')
+//			i++;
+//	else if (line[0] == '\'')
+//		while (line[i] && line[i] != '\'')
+//			i++;
+//	else
+//		while (line[i] && (line[i] <= 9 || line[i] >= 13) && line[i] != 32)
+//			i++;
+//	if (!(word = malloc(i + 1)))
+//		return (NULL);
+//	ft_strlcpy(word, line, i + 1);
+//	return (word);
+//}
 
 int		get_next_line(int fd, char **line)
 {

@@ -3,63 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   input_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alganoun <alganoun@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 11:34:59 by alganoun          #+#    #+#             */
-/*   Updated: 2021/05/28 17:04:33 by alganoun         ###   ########lyon.fr   */
+/*   Updated: 2021/06/26 17:40:34 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		command_parsing(char **line, t_token **token_list)
+void	option_finder(char *str, t_token **token)
 {
-	(*token_list)->cmd = get_next_word(*line);
-	if ((*token_list)->cmd == NULL)
-		return (-1);
-	*line += ft_strlen((*token_list)->cmd);
-	return (0);
-}
+	int i;
 
-int		option_parsing(char **line, t_token **token_list)
-{
-	char *word;
-	int found;
-
-	found = 1;
-	while (found == 1)
+	i = 0;
+	if (str[i] == '"')
+		i++;
+	if (str[i] == '-' && str[i + 1] != '\0')
 	{
-		found = 0;
-		word = get_next_word(*line);
-		if (word == NULL)
-			return (-1);
-		if (is_option(word) == 1)
-			found = 1;
-		if (found == 1)
+		if ((*token)->option == NULL)
 		{
-			(*token_list)->option = ft_strjoin((*token_list)->option, word);
-			if ((*token_list)->option == NULL)
-				return (-1);
+			(*token)->option = (char **)malloc(sizeof(char *) * 2);
+			(*token)->option[0] = ft_strdup(str);
+			(*token)->option[1] = NULL;
 		}
-		*line += ft_strlen(word);
-		free(word);
+		else
+			reallocate_tab(&((*token)->option), str);
 	}
-	return (0);
 }
 
-int		argument_parsing(char **line, t_token **token_list)
+void	arg_finder(char *str, t_token **token)
 {
-	char *word;
+	int i;
 
-	word = get_next_word(*line);
-	while (word[0] != '\0')
+	i = 0;
+	if (str[i] == '"')
+		i++;
+	if (str[i] != '-' && str[i + 1] != '\0')
 	{
-		(*token_list)->arg = ft_strjoin((*token_list)->arg, word);
-		if ((*token_list)->arg == NULL)
-			return (-1);
-		*line += ft_strlen((*token_list)->cmd);
-		free (word);
-		word = get_next_word(*line);
+		if ((*token)->arg == NULL)
+		{
+			(*token)->arg= (char **)malloc(sizeof(char *) * 2);
+			(*token)->arg[0] = str;
+			(*token)->arg[1] = NULL;
+		}
+		else
+			reallocate_tab(&((*token)->arg), str);
 	}
-	return (0);
 }

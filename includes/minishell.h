@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alganoun <alganoun@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/05/28 15:09:21 by alganoun         ###   ########lyon.fr   */
+/*   Updated: 2021/06/26 17:29:29 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct		s_token
 	char			*cmd;
 	char			**option;
 	char			**arg;
-	struct s_cmd	*next;
+	struct s_token	*next;
 }					t_token;
 
 /*------------UTILS---------------*/
@@ -55,13 +55,17 @@ int			pwd_process(/*t_cmd **cmd*/);
 int			bash_process(/*t_cmd **cmd,*/ char **tab);
 int			word_count(char *str);
 int			write_exec_errors();
-void		cmd_parser(t_cmd **cmd);
-int			init_struct(t_cmd **cmd);
-int			execute_command(t_cmd **cmd);
-void		free_tab(char ***tab, int count);
+int			init_struct(t_token **token);
+void		free_tab(char ***tab);
 void		safe_free(char **str);
-t_prcess	*ft_prcessnew(char *content);
-void		ft_prcessadd_back(t_prcess **aprcess, t_prcess *new);
-t_prcess	*ft_prcesslast(t_prcess *prcess);
-
+t_token		*token_last(t_token *token);
+void		token_add_back(t_token **atoken, t_token **new);
+t_token		*token_new();
+void		space_into_dot(char **str);
+int			input_process2(char **pre_token, t_token **token);
+void		option_finder(char *str, t_token **token);
+void		arg_finder(char *str, t_token **token);
+int			tablen(char **tab);
+int			reallocate_tab(char ***tab, char *str);
+void		free_struct(t_token **token);
 #endif

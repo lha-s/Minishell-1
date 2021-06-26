@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 08:53:22 by alganoun          #+#    #+#             */
-/*   Updated: 2021/05/22 14:25:12 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/26 17:14:17 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int		init_struct(t_token **token)
 {
-	if (!(*token = (t_token *)malloc(1 * sizeof(t_token))))
+	*token = (t_token *)malloc(1 * sizeof(t_token));
+	if (!(*token))
 		return (-1);
 	(*token)->cmd = NULL;
 	(*token)->option = NULL;
@@ -32,24 +33,24 @@ t_token		*token_last(t_token *token)
 	return (token);
 }
 
-void	token_add_back(t_token **atoken, t_token *new)
+void	token_add_back(t_token **atoken, t_token **new)
 {
 	t_token *last;
 
 	if (*atoken == NULL)
 	{
-		new->next = NULL;
-		*atoken = new;
+		init_struct(new);
+		*atoken = *new;
 	}
 	else
 	{
 		last = token_last(*atoken);
-		last->next = new;
-		new->next = NULL;
+		last->next = *new;
+		(*new)->next = NULL;
 	}
 }
 
-t_token	*token_new(char *content)
+t_token	*token_new()
 {
 	t_token *token;
 

@@ -1,49 +1,62 @@
-NAME                    = minishell
-HEADER                  = ./includes/minishell.h
-LIBFT                   = libft.a
-LIBFT_PATH              = $(SRCS_PATH)/utils/libft
-SRCS_PATH				= ./srcs
-BUILT_IN				= built_in
-UTILS					= utils
-SRCS_NAME               = 	minishell.c \
-							input_process.c \
-							$(UTILS)/common_utils.c \
-							$(UTILS)/free_utils.c \
-							$(UTILS)/get_next.c \
-							$(UTILS)/struct_utils.c \
-							$(UTILS)/write_utils.c \
-							$(BUILT_IN)/bash_builtin.c \
-							$(BUILT_IN)/pwd_builtin.c \
-							
+NAME		=	Minishell
 
-SRCS			= $(addprefix $(SRCS_PATH)/,$(SRCS_NAME))
-OBJS            = $(SRCS:.c=.o)
-CC              = gcc
-RM              = rm -f
-CFLAGS          = #-Wall -Wextra -Werror
+HEAD 		=	./includes/*.h
 
-all     : $(LIBFT) $(NAME)
+INC			=	-I./includes/
 
-$(NAME) : $(OBJS) $(HEADER)
-	$(CC) $(CFLAGS) -o $@ *.o $(LIBFT)
+C			=	gcc
 
-%.o : %.c $(HEADER) $(LIBFT)
-	$(CC) $(CFLAGS) -I $(HEADER) -c $< 
+FLAGS		=	-Wall -Wextra -Werror
 
-clean   :
-	make -C $(LIBFT_PATH) $@
-	$(RM) $(OBJS)
-	rm ./*.o
+INFO		=	echo "Minishell is compiling..." &&
 
-fclean  : clean
-	$(RM) ./libft.a
-	$(RM) ./srcs/utils/libft/libft.a
-	$(RM) $(NAME)
+LIBFT		=	./srcs/utils/libft/libft.a
 
-re:     fclean all
 
-$(LIBFT):
-	make -C $(LIBFT_PATH) all
-	cp ./srcs/utils/libft/libft.a libft.a
+SRCS		= ./srcs/utils/common_utils.c \
+				./srcs/utils/free_utils.c \
+				./srcs/utils/get_next.c \
+				./srcs/utils/struct_utils.c \
+				./srcs/utils/write_utils.c \
+				./srcs/input_process.c \
+				./srcs/minishell.c
+OBJ			=	$(SRCS:.c=.o)
 
-.PHONY: all fclean clean re
+all: 	$(NAME)
+
+$(OBJ): $(HEAD)
+
+$(NAME): $(OBJ)
+	@echo "\033[0;35mLibft is compiling" \
+		&& sleep 1  && echo "...\033[0m"
+	@cd ./srcs/libft && make
+	@echo "\033[0;32mLibft compilation was succesfull.\033[0m"
+	@cd ..
+	@echo "\033[0;35mMinishell is compiling" \
+		&& sleep 1  && echo "...\033[0m" \
+		&& make process
+
+process: $(OBJ)
+	@$(CC) $(FLAGS) $(INC) -o $(NAME) $(OBJ) $(LIBFT)
+	@echo "\033[0;32mCub3D compilation was succesfull.\033[0m"
+
+%.o: %.c
+	@$(CC) $(FLAGS) $(INC) -o $@ -c $<
+
+clean:
+	rm -f $(OBJ)
+	@echo "\033[0;31mCub3D object files deletion complete\033[0m"
+
+test:
+	valgrind --tool=memcheck --leak-check=full --leak-resolution=high --show-reachable=no ./$(NAME)
+
+fclean: clean
+	@rm -f $(NAME)
+	@cd ./srcs/libft && make clean && cd ..
+	@echo "\033[0;31mLibft objects files deletion complete\033[0m"
+
+re:
+	@make clean
+	@make process
+
+.PHONY: all clean fclean re
