@@ -52,7 +52,7 @@ test:
 
 fclean: clean
 	@rm -f $(NAME)
-	@cd ./srcs/libft && make clean && cd ..
+	@cd ./srcs/utils/libft && make clean && cd ..
 	@echo "\033[0;31mLibft objects files deletion complete\033[0m"
 
 re:
