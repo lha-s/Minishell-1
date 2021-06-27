@@ -10,8 +10,9 @@ FLAGS		=	-Wall -Wextra -Werror
 
 INFO		=	echo "Minishell is compiling..." &&
 
-LIBFT		=	./srcs/utils/libft/libft.a
+LIBFT_PATH	=	./srcs/utils/libft
 
+LIBFT		=	$(LIBFT_PATH)/libft.a
 
 SRCS		= ./srcs/utils/common_utils.c \
 				./srcs/utils/free_utils.c \
@@ -44,6 +45,7 @@ process: $(OBJ)
 	@$(CC) $(FLAGS) $(INC) -o $@ -c $<
 
 clean:
+	make -C $(LIBFT_PATH) $@
 	rm -f $(OBJ)
 	@echo "\033[0;31mMinihell object files deletion complete\033[0m"
 
@@ -52,7 +54,7 @@ test:
 
 fclean: clean
 	@rm -f $(NAME)
-	@cd ./srcs/utils/libft && make clean && cd ..
+	@rm -f $(LIBFT)
 	@echo "\033[0;31mLibft objects files deletion complete\033[0m"
 
 re:
