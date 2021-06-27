@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 09:06:00 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/24 16:55:37 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/27 17:11:37 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	free_tab(char ***tab)
 	{
 		while ((*tab)[i] != NULL)
 		{
-			safe_free(&(*tab)[i]);
+			safe_free(&((*tab)[i]));
 			i++;
 		}
 		free(*tab);
@@ -38,8 +38,20 @@ void	free_tab(char ***tab)
 
 void	free_struct(t_token **token)
 {
+	t_token *next;
+	while ((*token)->next != NULL)
+	{
+		safe_free(&((*token))->cmd);
+		free_tab(&((*token))->option);
+		free_tab(&((*token))->arg);
+		next = (*token)->next;
+		free(*token);
+		*token = NULL;
+		*token = next;
+	}
 	safe_free(&(*token)->cmd);
 	free_tab(&(*token)->option);
 	free_tab(&(*token)->arg);
-	(*token)->next = NULL;
+	free((*token));
+	*token = NULL;
 }

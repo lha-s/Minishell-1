@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/26 17:29:29 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/27 17:41:13 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define TRUE 1
+# define FALSE 0
 
 # define BANNER			1
 # define MISSING_FILE	1
@@ -19,6 +22,9 @@
 # define BUFFER_SIZE 	1024
 # define EXIT_MSG	"\n[Process completed]"
 
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <limits.h>
@@ -68,4 +74,5 @@ void		arg_finder(char *str, t_token **token);
 int			tablen(char **tab);
 int			reallocate_tab(char ***tab, char *str);
 void		free_struct(t_token **token);
+int			cmd_selector(t_token *token, char **env);
 #endif
