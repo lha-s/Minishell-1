@@ -29,7 +29,7 @@ $(OBJ): $(HEAD)
 $(NAME): $(OBJ)
 	@echo "\033[0;35mLibft is compiling" \
 		&& sleep 1  && echo "...\033[0m"
-	@cd ./srcs/libft && make
+	@cd ./srcs/utils/libft && make
 	@echo "\033[0;32mLibft compilation was succesfull.\033[0m"
 	@cd ..
 	@echo "\033[0;35mMinishell is compiling" \
@@ -38,14 +38,14 @@ $(NAME): $(OBJ)
 
 process: $(OBJ)
 	@$(CC) $(FLAGS) $(INC) -o $(NAME) $(OBJ) $(LIBFT)
-	@echo "\033[0;32mCub3D compilation was succesfull.\033[0m"
+	@echo "\033[0;32mMinihell compilation was succesfull.\033[0m"
 
 %.o: %.c
 	@$(CC) $(FLAGS) $(INC) -o $@ -c $<
 
 clean:
 	rm -f $(OBJ)
-	@echo "\033[0;31mCub3D object files deletion complete\033[0m"
+	@echo "\033[0;31mMinihell object files deletion complete\033[0m"
 
 test:
 	valgrind --tool=memcheck --leak-check=full --leak-resolution=high --show-reachable=no ./$(NAME)

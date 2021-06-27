@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 08:53:22 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/26 17:14:17 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/27 15:00:31 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,7 @@ void	token_add_back(t_token **atoken, t_token **new)
 	t_token *last;
 
 	if (*atoken == NULL)
-	{
-		init_struct(new);
 		*atoken = *new;
-	}
 	else
 	{
 		last = token_last(*atoken);

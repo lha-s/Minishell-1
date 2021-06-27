@@ -6,21 +6,25 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/26 17:03:06 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/27 16:53:21 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	printf_all(t_token *token)
+void	printf_all(t_token *token) // Il faut supprimer cette fonction avant le rendu
 {
 	printf("CMD : %s\n", token->cmd);
 	if (token->option != NULL)
 		for (int i = 0 ; token->option[i] != NULL ; i++)
 			printf("OPTION = %s\n", token->option[i]);
+	else
+		printf("option = NULL\n");
 	if (token->arg != NULL)
 		for (int i = 0 ; token->arg[i] != NULL ; i++)
 			printf("ARG = %s\n", token->arg[i]);
+	else
+		printf("arg = NULL\n");
 }
 
 int		display_txt(char *str)
@@ -96,6 +100,7 @@ int		parsing(char *line, t_token **token_list)
 	//creation des elements
 	while (i < tablen(tab))
 	{
+		init_struct(&new);
 		token_add_back(token_list, &new);
 		input_process(tab, &new);
 		i++;
@@ -109,7 +114,6 @@ int		main(/*int argc, char **argv, char **data*/)
 	//int	fd;
 	char *line;
 	t_token *token;
-	//t_token *begin;
 
 	ret = 1;
 	token = NULL;
@@ -127,6 +131,5 @@ int		main(/*int argc, char **argv, char **data*/)
 		safe_free(&line);
 	}
 	safe_free(&line);
-	safe_free((char **)&token);
 	return (0);
 }
