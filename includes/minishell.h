@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/28 18:38:51 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/28 20:13:47 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int			get_next_input(char **line);
 int			write_errors(int option, char *str);
 size_t		ft_strlen(const char *str);
 ssize_t		write_output(char *str);
+int			write_exit();
 char		*get_next_word(char *line);
 int			is_option(char *str);
 int			display_txt(char *str);

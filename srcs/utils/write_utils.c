@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   write_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:00:24 by alganoun          #+#    #+#             */
-/*   Updated: 2021/03/03 14:19:30 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/06/28 20:13:23 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 ssize_t		write_output(char *str)
 {
 	return ((write(1, str, ft_strlen(str))) + (write(1, "\n", 1)));
+}
+
+int		write_exit()
+{
+	write(1, "exit", 4);
+	return (0);
 }
 
 int		write_errors(int option, char *str)

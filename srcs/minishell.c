@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/28 20:04:44 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/28 20:13:58 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,7 @@ int		main(int argc, char **argv, char **env)
 		if (parsing(line, &token) == -1)
 			return(-1);
 		printf_all(token);
-		if (cmd_selector(token, env) == 0)
-		{
-			ret = 0;
-			write(1, "exit\n", 6);
-		}
+		ret = cmd_selector(token, env);
 		free_struct(&token);
 		safe_free(&line);
 	}

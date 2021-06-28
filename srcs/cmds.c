@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/06/27 21:47:00 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/06/28 20:14:29 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	**strenv(char **env, char *s)
 	char **dst;
 	int ret;
 	int i;
-	
+
 	i = 0;
 	ret = 1;
 	while (ret != 0)
@@ -82,7 +82,7 @@ int 	exec_else(char *line, char **env)
 int		cmd_selector(t_token *token, char **env)
 {
 	if (ft_strncmp(token->cmd, "exit", 4) == 0)
-		return (FALSE);
+		return (write_exit());
 	else if (ft_strncmp(token->cmd, "echo", 4) == 0)
 		return (TRUE);
 	else if (ft_strncmp(token->cmd, "cd", 2) == 0)
