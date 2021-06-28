@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 08:53:22 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/27 15:00:31 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/28 18:21:51 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int		init_struct(t_token **token)
 	(*token)->cmd = NULL;
 	(*token)->option = NULL;
 	(*token)->arg = NULL;
+	(*token)->operator = NULL;
 	(*token)->next = NULL;
 	return (0);
 }

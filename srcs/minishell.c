@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/27 21:48:49 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/06/28 20:04:44 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,23 @@
 
 void	printf_all(t_token *token) // Il faut supprimer cette fonction avant le rendu
 {
-	printf("CMD : %s\n", token->cmd);
-	if (token->option != NULL)
-		for (int i = 0 ; token->option[i] != NULL ; i++)
-			printf("OPTION = %s\n", token->option[i]);
-	else
-		printf("option = NULL\n");
-	if (token->arg != NULL)
-		for (int i = 0 ; token->arg[i] != NULL ; i++)
-			printf("ARG = %s\n", token->arg[i]);
-	else
-		printf("arg = NULL\n");
+	while (token != NULL)
+	{
+		printf("CMD : %s\n", token->cmd);
+		printf("OPERATOR : %s\n", token->operator);
+		if (token->option != NULL)
+			for (int i = 0 ; token->option[i] != NULL ; i++)
+				printf("OPTION = %s\n", token->option[i]);
+		else
+			printf("OPTION = NULL\n");
+		if (token->arg != NULL)
+			for (int i = 0 ; token->arg[i] != NULL ; i++)
+				printf("ARG = %s\n", token->arg[i]);
+		else
+			printf("arg = NULL\n");
+		printf("\n");
+		token = token->next;
+	}
 }
 
 int		display_txt(char *str)
@@ -56,11 +62,22 @@ int		display_txt(char *str)
 int		input_process2(char **pre_token, t_token **token)
 {
 	int i;
+	t_token *new;
 
 	i = 1;
 	(*token)->cmd = pre_token[0];
 	while (pre_token[i] != NULL)
 	{
+		if (operator_finder(pre_token[i], token) == 1)
+		{
+			i++;
+			init_struct(&new);
+			new->next = (*token)->next->next;
+			(*token)->next->next = new;
+			new->cmd = pre_token[i];
+			*token = new;
+			i++;
+		}
 		option_finder(pre_token[i], token);
 		arg_finder(pre_token[i], token);
 		i++;
@@ -128,7 +145,7 @@ int		main(int argc, char **argv, char **env)
 		if (parsing(line, &token) == -1)
 			return(-1);
 		printf_all(token);
-		if ((cmd_selector(token, env)) == 0)
+		if (cmd_selector(token, env) == 0)
 		{
 			ret = 0;
 			write(1, "exit\n", 6);

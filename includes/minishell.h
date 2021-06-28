@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/27 21:47:58 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/06/28 18:38:51 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct		s_token
 	char			*cmd;
 	char			**option;
 	char			**arg;
+	char			*operator;
 	struct s_token	*next;
 }					t_token;
 
@@ -70,6 +71,7 @@ t_token		*token_new();
 void		space_into_dot(char **str);
 int			input_process2(char **pre_token, t_token **token);
 void		option_finder(char *str, t_token **token);
+int			operator_finder(char *str, t_token **token);
 void		arg_finder(char *str, t_token **token);
 int			tablen(char **tab);
 int			reallocate_tab(char ***tab, char *str);
