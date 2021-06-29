@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/28 20:13:58 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/29 15:53:01 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,12 @@ int		input_process2(char **pre_token, t_token **token)
 			(*token)->next->next = new;
 			new->cmd = pre_token[i];
 			*token = new;
-			i++;
 		}
-		option_finder(pre_token[i], token);
-		arg_finder(pre_token[i], token);
+		else
+		{
+			option_finder(pre_token[i], token);
+			arg_finder(pre_token[i], token);
+		}
 		i++;
 	}
 	return (0);
