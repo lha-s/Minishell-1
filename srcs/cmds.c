@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/06/28 20:14:29 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/29 14:54:09 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,35 +50,65 @@ void	exec_cmd(char *line, char **env)
 	}
 }
 
-void	exec_child(char *line, char **env, int pfd[2])
+void	exec_child(t_token *token, char **env/*, int pfd[2]*/)
 {
-	close(pfd[1]);
-	exec_cmd(line, env);
+	//close(pfd[1]);
+	exec_cmd(token->cmd, env);
+	//close (pfd[0]);
+	exit(EXIT_SUCCESS);
 }
 
-void	exec_parent(int pfd[2])
+void	exec_parent(t_token *token, char **env/*int pfd[2]*/)
 {
-	close(pfd[0]);
-	//Continuer quand tu aura une liste chainée pour passer sur la cmd suivante
-	//chercher si y a encore un pipe "|"" pour execve recusive
+	int i;
+	t_token *tmp;
+	//close(pfd[0]);
+	i = 0;
+	tmp = token;
+	num++;
+	printf("num = %d\n", num);
+	while (i < num && tmp->next != NULL)
+		tmp = tmp->next;
+	if (tmp->operator != NULL)
+		printf("%s\n", token->operator);
+	(void)env;
+		//exec_else(tmp, env); //RECURSIVE ICI
+	//close(pfd[1]);
+	
+	//chercher si y a encore un pipe "|" pour execve recusive
 	//regarder prochain element de la liste chainée
 }
 
-int 	exec_else(char *line, char **env)
+int 	exec_else(t_token *token, char **env)
 {
-	int pfd[2];
+	//int pfd[2];
+	pid_t 	cpid;
+	pid_t 	w;
+	int 	status;
 
-	if (pipe(pfd) == 0)
-		exec_child(line, env, pfd);
-	else if (pipe(pfd) != -1)
+	cpid = fork();
+    if (cpid == -1) 
 	{
-		//wait l'execution du child
-		exec_parent(pfd);
-		//do shit
+		//fail error
+		printf("fail\n");
+	}
+	if (cpid == 0) 
+	{            /* Code executed by child */
+        //if (pipe(pfd) == 0)
+			exec_child(token, env/*, pfd*/);
+	} 
+	else 
+	{            /* Code executed by parent */
+		exec_parent(token, env/*pfd*/);
+		w = waitpid(cpid, &status, WUNTRACED | WCONTINUED);
+		if (w == -1) 
+		{
+			//fail error
+			printf("fail\n");
+		}
 	}
 	return (TRUE);
 }
-
 int		cmd_selector(t_token *token, char **env)
 {
 	if (ft_strncmp(token->cmd, "exit", 4) == 0)
@@ -95,7 +125,7 @@ int		cmd_selector(t_token *token, char **env)
 		return (TRUE);
 	else if (ft_strncmp(token->cmd, "env", 3) == 0)
 		return (TRUE);
-	return (exec_else(token->cmd, env));
+	return (exec_else(token, env));
 }
 
 /*
