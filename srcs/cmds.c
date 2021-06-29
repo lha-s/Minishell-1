@@ -6,26 +6,16 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/06/29 14:54:09 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/06/29 15:50:59 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**strenv(char **env, char *s)
+char	**strenv(char *s)
 {
 	char **dst;
-	int ret;
-	int i;
-
-	i = 0;
-	ret = 1;
-	while (ret != 0)
-	{
-		ret = ft_strncmp(env[i], s, ft_strlen(s));
-		i++;
-	}
-	dst = ft_split(env[i - 1] + ft_strlen(s), ':');
+	dst = ft_split(getenv(s) + ft_strlen(s), ':');
 	return (dst);
 }
 
@@ -39,7 +29,7 @@ void	exec_cmd(char *line, char **env)
 
 	cmd = ft_split(line, ' ');
 	i = 0;
-	path = strenv(env, "PATH=");
+	path = strenv("PATH=");
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");
