@@ -4,7 +4,7 @@ HEAD 		=	./includes/*.h
 
 INC			=	-I./includes/
 
-C			=	gcc
+CC			=	gcc
 
 FLAGS		=	-Wall -Wextra -Werror
 
