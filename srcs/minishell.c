@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/01 11:33:47 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/01 11:47:46 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,17 +148,20 @@ int		main(int argc, char **argv, char **env)
 		get_next_input(&line);
 		if (parsing(line, &token) == -1)
 			return(-1);
-		if (token->out == 1)
+		if (token != NULL)
 		{
-			token->in = 1;
-			token->out = 0;
+			if (token->out == 1)
+			{
+				token->in = 1;
+				token->out = 0;
+			}
+			if (token->next && strncmp(token->next->operator, "|", 2) == 0)
+				token->out = 1;
+			//printf_all(token);
+			ret = cmd_selector(token, env);
+			free_struct(&token);
+			safe_free(&line);
 		}
-		if (token->next && strncmp(token->next->operator, "|", 2) == 0)
-			token->out = 1;
-		//printf_all(token);
-		ret = cmd_selector(token, env);
-		free_struct(&token);
-		safe_free(&line);
 	}
 	int i = 0;
 	while (token && i < token->pid_index)
