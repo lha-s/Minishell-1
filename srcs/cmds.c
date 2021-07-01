@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/06/29 15:50:59 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/01 11:13:04 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**strenv(char *s)
 	return (dst);
 }
 
-void	exec_cmd(char *line, char **env)
+void	exec_cmd(t_token *token, char **env)
 {
 	int i;
 	char **path;
@@ -27,78 +27,61 @@ void	exec_cmd(char *line, char **env)
 	struct stat buf;
 	char **cmd;
 
-	cmd = ft_split(line, ' ');
+	cmd = ft_split(token->cmd, ' ');
 	i = 0;
 	path = strenv("PATH=");
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");
-		tmp = ft_strjoin(tmp, ft_strnstr(line, cmd[0], ft_strlen(cmd[0])));
+		tmp = ft_strjoin(tmp, ft_strnstr(token->cmd, cmd[0], ft_strlen(cmd[0])));
 		if (stat(tmp, &buf) == 0)
 			execve(tmp, cmd, env);
 		i++;
 	}
 }
 
-void	exec_child(t_token *token, char **env/*, int pfd[2]*/)
+int exec_cmd_(t_token* s, char* env[])
 {
-	//close(pfd[1]);
-	exec_cmd(token->cmd, env);
-	//close (pfd[0]);
-	exit(EXIT_SUCCESS);
-}
 
-void	exec_parent(t_token *token, char **env/*int pfd[2]*/)
-{
-	int i;
-	t_token *tmp;
-	//close(pfd[0]);
-	i = 0;
-	tmp = token;
-	num++;
-	printf("num = %d\n", num);
-	while (i < num && tmp->next != NULL)
-		tmp = tmp->next;
-	if (tmp->operator != NULL)
-		printf("%s\n", token->operator);
-	(void)env;
-		//exec_else(tmp, env); //RECURSIVE ICI
-	//close(pfd[1]);
-	
-	//chercher si y a encore un pipe "|" pour execve recusive
-	//regarder prochain element de la liste chainée
-}
+	int old_in = s->fd[0];
 
-int 	exec_else(t_token *token, char **env)
-{
-	//int pfd[2];
-	pid_t 	cpid;
-	pid_t 	w;
-	int 	status;
-
-	cpid = fork();
-    if (cpid == -1) 
+	if (s->out && pipe(s->fd) < 0)
 	{
-		//fail error
-		printf("fail\n");
+		printf("pipe failed\n");
+		return (write_errors(3, NULL));
 	}
-	if (cpid == 0) 
-	{            /* Code executed by child */
-        //if (pipe(pfd) == 0)
-			exec_child(token, env/*, pfd*/);
-	} 
-	else 
-	{            /* Code executed by parent */
-		exec_parent(token, env/*pfd*/);
-		w = waitpid(cpid, &status, WUNTRACED | WCONTINUED);
-		if (w == -1) 
-		{
-			//fail error
-			printf("fail\n");
-		}
+
+	pid_t pid = fork();
+	if (pid == 0)
+	{
+			if (s->out)
+			{
+				dup2(s->fd[1], STDOUT_FILENO);
+				close(s->fd[1]);
+			}
+			if (s->in)
+			{
+				dup2(old_in, STDIN_FILENO);
+				close(old_in);
+			}
+			exec_cmd(s, env);
+			// error
+			exit(1);
 	}
+	else if (pid > 0)
+	{
+		s->pids[s->pid_index++] = pid;
+
+		if (s->out)
+			close(s->fd[1]);
+		if (s->in)
+			close(s->fd[0]);
+	}
+	else
+		; // error
 	return (TRUE);
 }
+
 int		cmd_selector(t_token *token, char **env)
 {
 	if (ft_strncmp(token->cmd, "exit", 4) == 0)
@@ -115,15 +98,10 @@ int		cmd_selector(t_token *token, char **env)
 		return (TRUE);
 	else if (ft_strncmp(token->cmd, "env", 3) == 0)
 		return (TRUE);
-	return (exec_else(token, env));
+	return (exec_cmd_(token, env));
 }
 
 /*
-Pipe
-Fork -> recup pid du fils
-si 0 : fil, si != -1 : père
-kill fils quand terminé
-
 http://www.zeitoun.net/articles/communication-par-tuyau/start
 https://linux.die.net/man/2/waitpid
 http://manpagesfr.free.fr/man/man2/fork.2.html

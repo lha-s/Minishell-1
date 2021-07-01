@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/29 14:50:00 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/01 11:07:40 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ typedef struct		s_token
 	char			**arg;
 	char			*operator;
 	struct s_token	*next;
+	int 			fd[2];
+	char 			in;
+	char 			out;
+	pid_t 			pids[700];
+	int 			pid_index;
 }					t_token;
 
 /*------------UTILS---------------*/
@@ -80,4 +85,5 @@ int			tablen(char **tab);
 int			reallocate_tab(char ***tab, char *str);
 void		free_struct(t_token **token);
 int			cmd_selector(t_token *token, char **env);
+int 		exec_else_(t_token *token, char **env);
 #endif
