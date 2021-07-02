@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/29 15:53:01 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/01 11:47:46 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ int		main(int argc, char **argv, char **env)
 	//int	fd;
 	char *line;
 	t_token *token;
+	int wstatus;
+	int wret;
 
 	(void)argc;
 	(void)argv;
@@ -146,10 +148,29 @@ int		main(int argc, char **argv, char **env)
 		get_next_input(&line);
 		if (parsing(line, &token) == -1)
 			return(-1);
-		printf_all(token);
-		ret = cmd_selector(token, env);
-		free_struct(&token);
-		safe_free(&line);
+		if (token != NULL)
+		{
+			if (token->out == 1)
+			{
+				token->in = 1;
+				token->out = 0;
+			}
+			if (token->next && strncmp(token->next->operator, "|", 2) == 0)
+				token->out = 1;
+			//printf_all(token);
+			ret = cmd_selector(token, env);
+			free_struct(&token);
+			safe_free(&line);
+		}
+	}
+	int i = 0;
+	while (token && i < token->pid_index)
+	{
+		waitpid(token->pids[i], &wstatus, 0);
+		if (WIFEXITED(wstatus))
+			wret = WEXITSTATUS(wstatus);
+		token->pids[i] = 0;
+		i++;
 	}
 	safe_free(&line);
 	return (0);
