@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/03 17:54:40 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/04 00:51:09 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,6 @@ void	printf_all(t_token *token) // Il faut supprimer cette fonction avant le ren
 		printf("\n");
 		token = token->next;
 	}
-}
-
-int		display_txt(char *str)
-{
-	int fd;
-	int ret;
-	char *line;
-	ret = 1;
-
-	fd = open(str, O_RDONLY);
-	printf("%d\n", fd);
-	if (fd > 0)
-	{
-		while(ret > 0)
-		{
-			ret = get_next_line(fd, &line);
-			write_output(line);
-			free(line);
-		}
-		ret = get_next_line(fd, &line);
-		write_output(line);
-		free(line);
-	}
-	if (ret != 0)
-		return (write_errors(1, str));
-	return (0);
 }
 
 int		input_process2(char **pre_token, t_token **token)
@@ -127,21 +101,43 @@ int		parsing(char *line, t_token **token_list)
 	return(0);
 }
 
-int		main(int argc, char **argv, char **env)
+void	token_process(t_token **token) // j'ai nommé cette fonction de cette façon car je ne comprend pas encore très bien sa fonction.
+{
+	if ((*token)->out == 1)
+	{
+		(*token)->in = 1;
+		(*token)->out = 0;
+	}
+	if ((*token)->next && strncmp((*token)->next->operator, "|", 2) == 0)
+		(*token)->out = 1;
+}
+
+void	token_process2(t_token **token) // j'ai nommé cette fonction de cette façon car je ne comprend pas encore très bien sa fonction.
+{
+	int i;
+	int wstatus;
+	int wret;
+
+	i = 0;
+	while (*token && i < (*token)->pid_index)
+	{
+		waitpid((*token)->pids[i], &wstatus, 0);
+		if (WIFEXITED(wstatus))
+			wret = WEXITSTATUS(wstatus);
+		(*token)->pids[i] = 0;
+		i++;
+	}
+}
+
+int		minishell(char **env)
 {
 	int ret;
 	//int	fd;
 	char *line;
 	t_token *token;
-	int wstatus;
-	int wret;
 
-	(void)argc;
-	(void)argv;
 	ret = 1;
 	token = NULL;
-	if (display_txt("banner.txt") == -1)
-		return (-1);
 	while(ret != 0)
 	{
 		write(1, "[minishell-1.0$ ", 16);
@@ -150,28 +146,26 @@ int		main(int argc, char **argv, char **env)
 			return(-1);
 		if (token != NULL)
 		{
-			if (token->out == 1)
-			{
-				token->in = 1;
-				token->out = 0;
-			}
-			if (token->next && strncmp(token->next->operator, "|", 2) == 0)
-				token->out = 1;
+			token_process(&token);
 			printf_all(token);
 			ret = cmd_selector(token, env);
 			free_struct(&token);
 			safe_free(&line);
 		}
 	}
-	int i = 0;
-	while (token && i < token->pid_index)
-	{
-		waitpid(token->pids[i], &wstatus, 0);
-		if (WIFEXITED(wstatus))
-			wret = WEXITSTATUS(wstatus);
-		token->pids[i] = 0;
-		i++;
-	}
+	token_process2(&token);
 	safe_free(&line);
+	return (0);
+}
+
+int		main(int argc, char **argv, char **env)
+{
+	(void)argc;
+	(void)argv;
+
+	if (display_txt("banner.txt") == -1)
+		return (-1);
+	if (minishell(env) == -1)
+		return (-1); // imprimer un message d'erreur ici
 	return (0);
 }

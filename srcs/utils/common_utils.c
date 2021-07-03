@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 08:00:40 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/29 17:03:24 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/04 00:51:24 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,32 @@ int		 tablen(char **tab)
 	while (tab[i] != NULL)
 		i++;
 	return (i);
+}
+
+int		display_txt(char *str)
+{
+	int fd;
+	int ret;
+	char *line;
+	ret = 1;
+
+	fd = open(str, O_RDONLY);
+	printf("%d\n", fd);
+	if (fd > 0)
+	{
+		while(ret > 0)
+		{
+			ret = get_next_line(fd, &line);
+			write_output(line);
+			free(line);
+		}
+		ret = get_next_line(fd, &line);
+		write_output(line);
+		free(line);
+	}
+	if (ret != 0)
+		return (write_errors(1, str));
+	return (0);
 }
 
 int		reallocate_tab(char ***tab, char *str)
