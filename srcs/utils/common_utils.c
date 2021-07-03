@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 08:00:40 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/29 16:57:33 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/06/29 17:03:24 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,11 @@ void	space_into_dot(char **str)
 	i = 0;
 	while ((*str)[i])
 	{
-		if ((*str)[i] == '"')
+		if ((*str)[i] == '"' || (*str)[i] == '\'')
 		{
 			i++;
-			while ((*str)[i] && (*str)[i] != '"')
+			while (((*str)[i] && (*str)[i] != '"')
+				&& ((*str)[i] && (*str)[i] != '\''))
 				i++;
 		}
 		else if ((*str)[i] == ' ')

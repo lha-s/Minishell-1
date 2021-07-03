@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 11:34:59 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/29 15:51:37 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/03 17:51:35 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ int		operator_finder(char *str, t_token **token)
 	if (str !=	NULL)
 	{
 		if ((str[i] == '|' && str[i + 1] == '\0')
-			|| (str[i] == '&' && str[i + 1] == '\0'))
+			|| (str[i] == '&' && str[i + 1] == '\0')
+			|| (str[i] == '>' && str[i + 1] == '\0')
+			|| (str[i] == '<' && str[i + 1] == '\0')
+			|| (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '\0')
+			|| str[i] == '<' && str[i + 1] == '<' && str[i + 2] == '\0')
 		{
 			init_struct(&new);
 			new->operator = ft_strdup(str);
