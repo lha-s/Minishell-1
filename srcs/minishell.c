@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/04 01:18:57 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/04 01:33:06 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,8 @@ int		minishell(char **env)
 	{
 		write(1, "[minishell-1.0$ ", 16);
 		get_next_input(&line);
-		add_history(line);
+		//line = readline("[minishell-1.0$ "); cette ligne devrait faire en sorte que GNL ne soit plus utile
+		//add_history(line); cette ligne permettra de générer un historique comme demandé dans l'énoncé
 		if (parsing(line, &token) == -1)
 			return(-1);
 		if (token != NULL)
