@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/01 11:07:40 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/04 01:21:25 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <string.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # include "../srcs/utils/libft/libft.h"
 
 # define ID_ECHO 0
