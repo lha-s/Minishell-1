@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/01 11:47:46 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/03 17:54:40 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ int		main(int argc, char **argv, char **env)
 			}
 			if (token->next && strncmp(token->next->operator, "|", 2) == 0)
 				token->out = 1;
-			//printf_all(token);
+			printf_all(token);
 			ret = cmd_selector(token, env);
 			free_struct(&token);
 			safe_free(&line);

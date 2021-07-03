@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:00:24 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/28 20:13:23 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/03 17:56:40 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ ssize_t		write_output(char *str)
 
 int		write_exit()
 {
-	write(1, "exit", 4);
+	write(1, "Bash: exit", 10);
 	return (0);
 }
 
