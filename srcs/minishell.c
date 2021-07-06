@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/04 01:33:06 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/06 17:07:19 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,16 @@ int		parsing(char *line, t_token **token_list)
 	char	**tab;
 	t_token	*new;
 	i = 0;
-	// fonction de gestion d'erreurs
+
 	tab = ft_split(line, ';');
 	if (!tab)
 		return (write_errors(3, NULL));
-	//creation des elements
 	while (i < tablen(tab))
 	{
 		init_struct(&new);
 		token_add_back(token_list, &new);
 		input_process(tab, &new);
+		// Gérer les erreurs de mauvais char ici.
 		i++;
 	}
 	return(0);
@@ -133,27 +133,23 @@ void	token_process2(t_token **token) // j'ai nommé cette fonction de cette faç
 int		minishell(char **env)
 {
 	int ret;
-	//int	fd;
 	char *line;
 	t_token *token;
 
 	ret = 1;
 	token = NULL;
+	line = NULL;
 	while(ret != 0)
 	{
-		write(1, "[minishell-1.0$ ", 16);
 		get_next_input(&line);
-		//line = readline("[minishell-1.0$ "); cette ligne devrait faire en sorte que GNL ne soit plus utile
-		//add_history(line); cette ligne permettra de générer un historique comme demandé dans l'énoncé
 		if (parsing(line, &token) == -1)
-			return(-1);
+			return(exit_free(&token, &line));
 		if (token != NULL)
 		{
 			token_process(&token);
 			printf_all(token);
 			ret = cmd_selector(token, env);
 			free_struct(&token);
-			safe_free(&line);
 		}
 	}
 	token_process2(&token);

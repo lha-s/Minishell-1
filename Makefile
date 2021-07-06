@@ -39,7 +39,7 @@ $(NAME): $(OBJ)
 		&& make process
 
 process: $(OBJ)
-	@$(CC) $(FLAGS) $(INC) -o $(NAME) $(OBJ) $(LIBFT)
+	@$(CC) $(FLAGS) $(INC) -lreadline -o $(NAME) $(OBJ) $(LIBFT)
 	@echo "\033[0;32mMinihell compilation was succesfull.\033[0m"
 
 %.o: %.c

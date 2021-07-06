@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 09:06:00 by alganoun          #+#    #+#             */
-/*   Updated: 2021/06/27 17:11:37 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/06 16:30:57 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,11 @@ void	free_struct(t_token **token)
 	free_tab(&(*token)->arg);
 	free((*token));
 	*token = NULL;
+}
+
+int		exit_free(t_token **token, char **line)
+{
+	free_struct(token);
+	safe_free(line);
+	return (-1);
 }
