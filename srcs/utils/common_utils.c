@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 08:00:40 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/04 00:51:24 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/07 17:09:12 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		reallocate_tab(char ***tab, char *str)
 	return (0);
 }
 
-void	space_into_dot(char **str)
+int		space_into_dot(char **str)
 {
 	int i;
 
@@ -81,9 +81,12 @@ void	space_into_dot(char **str)
 			while (((*str)[i] && (*str)[i] != '"')
 				&& ((*str)[i] && (*str)[i] != '\''))
 				i++;
+			if ((*str)[i] == '\0')
+				return (write_errors(3, *str));
 		}
 		else if ((*str)[i] == ' ')
 			(*str)[i] = '.';
 		i++;
 	}
+	return (0);
 }

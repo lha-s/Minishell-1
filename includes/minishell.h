@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/06 16:31:51 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/07 17:07:54 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void		safe_free(char **str);
 t_token		*token_last(t_token *token);
 void		token_add_back(t_token **atoken, t_token **new);
 t_token		*token_new();
-void		space_into_dot(char **str);
+int			space_into_dot(char **str);
 int			input_process2(char **pre_token, t_token **token);
 void		option_finder(char *str, t_token **token);
 int			operator_finder(char *str, t_token **token);

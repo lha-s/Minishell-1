@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/06 17:07:19 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/07 17:40:20 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ int		input_process(char **tab, t_token **token)
 	while (tab[i] != NULL)
 	{
 		j = 0;
-		space_into_dot(&tab[i]);
+		if (space_into_dot(&tab[i]) == -1)
+			return (-1);
 		pre_token = ft_split(tab[i], '.');
 		input_process2(pre_token, token);
 		i++;
@@ -88,6 +89,8 @@ int		parsing(char *line, t_token **token_list)
 	t_token	*new;
 	i = 0;
 
+	if (*token_list != NULL)
+		free_struct(token_list);
 	tab = ft_split(line, ';');
 	if (!tab)
 		return (write_errors(3, NULL));
@@ -95,8 +98,8 @@ int		parsing(char *line, t_token **token_list)
 	{
 		init_struct(&new);
 		token_add_back(token_list, &new);
-		input_process(tab, &new);
-		// Gérer les erreurs de mauvais char ici.
+		if (input_process(tab, &new) == -1)
+			return (-1);
 		i++;
 	}
 	return(0);
@@ -142,9 +145,7 @@ int		minishell(char **env)
 	while(ret != 0)
 	{
 		get_next_input(&line);
-		if (parsing(line, &token) == -1)
-			return(exit_free(&token, &line));
-		if (token != NULL)
+		if (parsing(line, &token) != -1 && token != NULL)
 		{
 			token_process(&token);
 			printf_all(token);
