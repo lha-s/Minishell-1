@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/07 17:40:20 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/09 03:09:20 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,7 @@ int		parsing(char *line, t_token **token_list)
 	return(0);
 }
 
-void	token_process(t_token **token) // j'ai nommé cette fonction de cette façon car je ne comprend pas encore très bien sa fonction.
-{
+void	pipping(t_token **token)
 	if ((*token)->out == 1)
 	{
 		(*token)->in = 1;
@@ -116,7 +115,7 @@ void	token_process(t_token **token) // j'ai nommé cette fonction de cette faço
 		(*token)->out = 1;
 }
 
-void	token_process2(t_token **token) // j'ai nommé cette fonction de cette façon car je ne comprend pas encore très bien sa fonction.
+void	exit_status(t_token **token)
 {
 	int i;
 	int wstatus;
@@ -147,13 +146,13 @@ int		minishell(char **env)
 		get_next_input(&line);
 		if (parsing(line, &token) != -1 && token != NULL)
 		{
-			token_process(&token);
+			pipping(&token);
 			printf_all(token);
 			ret = cmd_selector(token, env);
 			free_struct(&token);
 		}
 	}
-	token_process2(&token);
+	exit_status(&token);
 	safe_free(&line);
 	return (0);
 }
