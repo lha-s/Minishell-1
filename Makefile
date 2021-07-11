@@ -21,7 +21,9 @@ SRCS		= ./srcs/utils/common_utils.c \
 				./srcs/utils/write_utils.c \
 				./srcs/input_process.c \
 				./srcs/minishell.c \
-				./srcs/cmds.c
+				./srcs/cmds.c \
+				./srcs/built_in/pwd.c
+
 OBJ			=	$(SRCS:.c=.o)
 
 all: 	$(NAME)

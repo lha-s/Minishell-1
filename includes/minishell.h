@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/07 17:07:54 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/11 18:44:04 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # define BANNER			1
 # define MISSING_FILE	1
 # define WRONG_CMD		2
+# define BAD_QUOTES		3
+# define PATH_ERROR		4
 # define BUFFER_SIZE 	1024
 # define EXIT_MSG	"\n[Process completed]"
 
@@ -68,7 +70,7 @@ int			write_exit();
 char		*get_next_word(char *line);
 int			is_option(char *str);
 int			display_txt(char *str);
-int			pwd_process(/*t_cmd **cmd*/);
+int			pwd_process();
 int			bash_process(/*t_cmd **cmd,*/ char **tab);
 int			word_count(char *str);
 int			write_exec_errors();
@@ -89,4 +91,6 @@ void		free_struct(t_token **token);
 int			cmd_selector(t_token *token, char **env);
 int 		exec_else_(t_token *token, char **env);
 int			exit_free(t_token **token, char **line);
+void		quote_remover(char **str);
+void		token_cleaning(t_token **token);
 #endif

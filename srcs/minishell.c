@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/09 03:09:20 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/11 18:43:51 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int		input_process(char **tab, t_token **token)
 			return (-1);
 		pre_token = ft_split(tab[i], '.');
 		input_process2(pre_token, token);
+		token_cleaning(token);
 		i++;
 	}
 	return (0);
@@ -105,7 +106,8 @@ int		parsing(char *line, t_token **token_list)
 	return(0);
 }
 
-void	pipping(t_token **token)
+void	piping(t_token **token)
+{
 	if ((*token)->out == 1)
 	{
 		(*token)->in = 1;
@@ -146,7 +148,7 @@ int		minishell(char **env)
 		get_next_input(&line);
 		if (parsing(line, &token) != -1 && token != NULL)
 		{
-			pipping(&token);
+			piping(&token);
 			printf_all(token);
 			ret = cmd_selector(token, env);
 			free_struct(&token);

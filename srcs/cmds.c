@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/01 11:13:04 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/11 19:23:39 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,21 +84,26 @@ int exec_cmd_(t_token* s, char* env[])
 
 int		cmd_selector(t_token *token, char **env)
 {
-	if (ft_strncmp(token->cmd, "exit", 4) == 0)
-		return (write_exit());
-	else if (ft_strncmp(token->cmd, "echo", 4) == 0)
-		return (TRUE);
-	else if (ft_strncmp(token->cmd, "cd", 2) == 0)
-		return (TRUE);
-	else if (ft_strncmp(token->cmd, "pwd", 3) == 0)
-		return (TRUE);
-	else if (ft_strncmp(token->cmd, "export", 6) == 0)
-		return (TRUE);
-	else if (ft_strncmp(token->cmd, "unset", 5) == 0)
-		return (TRUE);
-	else if (ft_strncmp(token->cmd, "env", 3) == 0)
-		return (TRUE);
-	return (exec_cmd_(token, env));
+	while (token != NULL)
+	{
+		if (ft_strcmp(token->cmd, "exit") == 0)
+			return (write_exit());
+		else if (ft_strcmp(token->cmd, "echo") == 0)
+			return (TRUE);
+		else if (ft_strcmp(token->cmd, "cd") == 0)
+			return (TRUE);
+		else if (ft_strcmp(token->cmd, "pwd") == 0)
+			return (pwd_process());
+		else if (ft_strcmp(token->cmd, "export") == 0)
+			return (TRUE);
+		else if (ft_strcmp(token->cmd, "unset") == 0)
+			return (TRUE);
+		else if (ft_strcmp(token->cmd, "env") == 0)
+			return (TRUE);
+		exec_cmd_(token, env);
+		token = token->next;
+	}
+	return (TRUE);
 }
 
 /*

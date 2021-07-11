@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 08:53:22 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/01 11:14:36 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/11 19:34:46 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,22 @@ t_token	*token_new()
 
 	init_struct(&token);
 	return (token);
+}
+
+void	token_cleaning(t_token **token)
+{
+	int i;
+
+	i = 0;
+
+	if ((*token)->cmd)
+		quote_remover(&((*token)->cmd));
+	while ((*token)->option && (*token)->option[i] != NULL)
+		quote_remover(&((*token)->option[i++]));
+	i = 0;
+	while ((*token)->arg && (*token)->arg[i] != NULL)
+		quote_remover(&((*token)->arg[i++]));
+	if ((*token)->operator)
+		quote_remover(&((*token)->operator));
+	*token = (*token)->next;
 }
