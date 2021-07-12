@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/09 03:09:20 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/10 00:08:20 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int		parsing(char *line, t_token **token_list)
 }
 
 void	pipping(t_token **token)
+{
 	if ((*token)->out == 1)
 	{
 		(*token)->in = 1;
@@ -148,7 +149,7 @@ int		minishell(char **env)
 		{
 			pipping(&token);
 			printf_all(token);
-			ret = cmd_selector(token, env);
+			ret = exec_cmd_(token, env);
 			free_struct(&token);
 		}
 	}

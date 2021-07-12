@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/01 11:13:04 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/10 18:19:58 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,28 @@ char	**strenv(char *s)
 	return (dst);
 }
 
+/*colle la commande à ses options*/
+char**	build_cmd(t_token *token)
+{
+	char **cmd;
+	char *tmp;
+	int i;
+
+	i = 0;
+	if (token->option == NULL)
+		return (ft_split(token->cmd, ' '));
+	tmp = ft_strjoin(token->cmd, " ");
+	while (token->option[i])
+	{
+		tmp = ft_strjoin(tmp, token->option[i]);
+		tmp = ft_strjoin(tmp, " ");
+		i++;
+	}
+	cmd = ft_split(tmp, ' ');
+	return (cmd);
+}
+
+/*executer la commande dans le bon path*/
 void	exec_cmd(t_token *token, char **env)
 {
 	int i;
@@ -26,8 +48,8 @@ void	exec_cmd(t_token *token, char **env)
 	char *tmp;
 	struct stat buf;
 	char **cmd;
-
-	cmd = ft_split(token->cmd, ' ');
+	
+	cmd = build_cmd(token);
 	i = 0;
 	path = strenv("PATH=");
 	while (path[i])
@@ -40,53 +62,75 @@ void	exec_cmd(t_token *token, char **env)
 	}
 }
 
-int exec_cmd_(t_token* s, char* env[])
+void	exec_builtin()
 {
+	exit(0);
+}
 
-	int old_in = s->fd[0];
-
-	if (s->out && pipe(s->fd) < 0)
+/*ouvre et ferme les pipe en fonction du type processus (parent ou enfant)*/
+void	 cfg_piping(t_token *token, pid_t pid, int old_in)
+{
+	if (token->out)
 	{
-		printf("pipe failed\n");
-		return (write_errors(3, NULL));
+		if (pid == 0)
+			dup2(token->fd[1], STDOUT_FILENO);
+		close(token->fd[1]);
 	}
+	if (token->in)
+	{
+		if (pid == 0)
+		{
+			dup2(old_in, STDIN_FILENO);
+			close(old_in);
+		}
+		else
+			close(token->fd[0]);
+	}
+}
 
+void	recursive_process(t_token *token, char **env)
+{
+	if (is_builtin(token) == FALSE)
+		exec_cmd(token, env);
+	else
+		exec_builtin();
+}
+
+int fork_process(t_token *token, char **env)
+{
+	int old_in;
+	
+	old_in = token->fd[0];
+	if (ft_strncmp(token->cmd, "exit", 4) == 0)
+		return (write_exit());
+	if (token->out && pipe(token->fd) < 0)
+	{
+		printf("Error: pipe failed\n");
+		return (FALSE);
+	}
 	pid_t pid = fork();
 	if (pid == 0)
 	{
-			if (s->out)
-			{
-				dup2(s->fd[1], STDOUT_FILENO);
-				close(s->fd[1]);
-			}
-			if (s->in)
-			{
-				dup2(old_in, STDIN_FILENO);
-				close(old_in);
-			}
-			exec_cmd(s, env);
-			// error
-			exit(1);
+		cfg_piping(token, pid, old_in);
+		recursive_process(token, env);
+		write_output("Error: fork had to be forced to quit\n");
+		exit(0);
 	}
 	else if (pid > 0)
 	{
-		s->pids[s->pid_index++] = pid;
-
-		if (s->out)
-			close(s->fd[1]);
-		if (s->in)
-			close(s->fd[0]);
+		token->pids[token->pid_index++] = pid;
+		cfg_piping(token, pid, old_in);
+		wait(&pid);
 	}
 	else
-		; // error
+		write_output("Error: fork failed, command failed\n");
 	return (TRUE);
 }
 
-int		cmd_selector(t_token *token, char **env)
+/*indique si la commande est un builtin (TRUE) ou pas (FALSE)*/
+int		is_builtin(t_token *token)
 {
-	if (ft_strncmp(token->cmd, "exit", 4) == 0)
-		return (write_exit());
-	else if (ft_strncmp(token->cmd, "echo", 4) == 0)
+	if (ft_strncmp(token->cmd, "echo", 4) == 0)
 		return (TRUE);
 	else if (ft_strncmp(token->cmd, "cd", 2) == 0)
 		return (TRUE);
@@ -98,10 +142,10 @@ int		cmd_selector(t_token *token, char **env)
 		return (TRUE);
 	else if (ft_strncmp(token->cmd, "env", 3) == 0)
 		return (TRUE);
-	return (exec_cmd_(token, env));
+	return (FALSE);
 }
 
-/*
+/* ls | wc
 http://www.zeitoun.net/articles/communication-par-tuyau/start
 https://linux.die.net/man/2/waitpid
 http://manpagesfr.free.fr/man/man2/fork.2.html
