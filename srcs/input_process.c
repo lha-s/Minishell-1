@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 11:34:59 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/07 17:05:10 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/12 17:47:08 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void	option_finder(char *str, t_token **token)
 	{
 		if (str[i] == '"') //gérer les erreurs de guilllemets ouverts ici
 			i++;
-		if (str[i] == '-' && str[i + 1] != '\0')
+		if ((ft_strcmp((*token)->cmd, "echo") != 0
+			&& str[i] == '-' && str[i + 1] != '\0')
+				|| (ft_strcmp((*token)->cmd, "echo") == 0
+					&& ft_strcmp(str, "-n") == 0))
 		{
 			if ((*token)->option == NULL)
 			{
@@ -69,7 +72,9 @@ void	arg_finder(char *str, t_token **token)
 	{
 		if (str[i] == '"')  //gérer les erreurs de guilllemets ouverts ici
 			i++;
-		if (str[i] != '-' && str[i + 1] != '\0')
+		if ((ft_strcmp((*token)->cmd, "echo") == 0
+			&& ft_strcmp(str, "-n") != 0)
+			|| (str[i] != '-' && str[i + 1] != '\0'))
 		{
 			if ((*token)->arg == NULL)
 			{

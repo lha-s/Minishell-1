@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/11 18:43:51 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/12 18:06:59 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,10 @@ int		input_process2(char **pre_token, t_token **token)
 
 	i = 1;
 	(*token)->cmd = pre_token[0];
+	quote_remover(&((*token)->cmd));
 	while (pre_token[i] != NULL)
 	{
+		quote_remover(&(pre_token[i]));
 		if (operator_finder(pre_token[i], token) == 1)
 		{
 			i++;
@@ -77,7 +79,7 @@ int		input_process(char **tab, t_token **token)
 			return (-1);
 		pre_token = ft_split(tab[i], '.');
 		input_process2(pre_token, token);
-		token_cleaning(token);
+		//token_cleaning(token);
 		i++;
 	}
 	return (0);

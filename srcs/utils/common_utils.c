@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 08:00:40 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/11 19:33:23 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/12 19:58:51 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		space_into_dot(char **str)
 	i = 0;
 	while ((*str)[i])
 	{
-		if ((*str)[i] == '"' || (*str)[i] == '\'')
+		if ((*str)[i] == '"' || (*str)[i] == '\'') // il faut regler le soucis des guillemets pour les arguments
 		{
 			i++;
 			while (((*str)[i] && (*str)[i] != '"')
