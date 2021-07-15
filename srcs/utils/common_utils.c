@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 08:00:40 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/12 19:58:51 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/15 21:08:21 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,54 +68,14 @@ int		reallocate_tab(char ***tab, char *str)
 	return (0);
 }
 
-int		space_into_dot(char **str)
-{
-	int i;
-
-	i = 0;
-	while ((*str)[i])
-	{
-		if ((*str)[i] == '"' || (*str)[i] == '\'') // il faut regler le soucis des guillemets pour les arguments
-		{
-			i++;
-			while (((*str)[i] && (*str)[i] != '"')
-				&& ((*str)[i] && (*str)[i] != '\''))
-				i++;
-			if ((*str)[i] == '\0')
-				return (write_errors(3, *str));
-		}
-		else if ((*str)[i] == ' ')
-			(*str)[i] = '.';
-		i++;
-	}
-	return (0);
-}
-
-void	quote_remover(char **str)
-{
-	int len;
-	int	i;
-	int j;
-	char *tmp;
-
-	i = 0;
-	j = 0;
-	len = 0;
-	while ((*str)[i])
-	{
-		if ((*str)[i] != '"' && (*str)[i] != '\'')
-			len++;
-		i++;
-	}
-	tmp = malloc(len + 1);
-	i = 0;
-	while ((*str)[i])
-	{
-		if ((*str)[i] != '"' && (*str)[i] != '\'')
-			tmp[j++] = (*str)[i];
-		i++;
-	}
-	tmp[j] = '\0';
-	safe_free(str);
-	*str = tmp;
-}
+//void	global_variable_replacement(char **str, char **env)
+//{
+//	int i;
+//
+//	i = 0;
+//	char *var
+//	char quote;
+//	if ((*str)[i] == '"' || (*str)[i] == '\'')
+//		quote = (*str)[i++]
+//	if ()
+//}

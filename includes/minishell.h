@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/11 18:44:04 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/15 21:30:44 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char		*get_next_word(char *line);
 int			is_option(char *str);
 int			display_txt(char *str);
 int			pwd_process();
+int			echo_process(t_token *token);
 int			bash_process(/*t_cmd **cmd,*/ char **tab);
 int			word_count(char *str);
 int			write_exec_errors();
@@ -81,7 +82,6 @@ t_token		*token_last(t_token *token);
 void		token_add_back(t_token **atoken, t_token **new);
 t_token		*token_new();
 int			space_into_dot(char **str);
-int			input_process2(char **pre_token, t_token **token);
 void		option_finder(char *str, t_token **token);
 int			operator_finder(char *str, t_token **token);
 void		arg_finder(char *str, t_token **token);
@@ -93,4 +93,6 @@ int 		exec_else_(t_token *token, char **env);
 int			exit_free(t_token **token, char **line);
 void		quote_remover(char **str);
 void		token_cleaning(t_token **token);
+//void		global_variable_replacement(char **str, char **env);
+int			write_variable(char *str, char c);
 #endif

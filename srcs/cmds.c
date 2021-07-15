@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/11 19:23:39 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/15 21:13:48 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int		cmd_selector(t_token *token, char **env)
 		if (ft_strcmp(token->cmd, "exit") == 0)
 			return (write_exit());
 		else if (ft_strcmp(token->cmd, "echo") == 0)
-			return (TRUE);
+			return (echo_process(token));
 		else if (ft_strcmp(token->cmd, "cd") == 0)
 			return (TRUE);
 		else if (ft_strcmp(token->cmd, "pwd") == 0)

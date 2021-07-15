@@ -15,6 +15,7 @@ LIBFT_PATH	=	./srcs/utils/libft
 LIBFT		=	$(LIBFT_PATH)/libft.a
 
 SRCS		= ./srcs/utils/common_utils.c \
+				./srcs/utils/common_utils2.c \
 				./srcs/utils/free_utils.c \
 				./srcs/utils/get_next.c \
 				./srcs/utils/struct_utils.c \
@@ -22,7 +23,8 @@ SRCS		= ./srcs/utils/common_utils.c \
 				./srcs/input_process.c \
 				./srcs/minishell.c \
 				./srcs/cmds.c \
-				./srcs/built_in/pwd.c
+				./srcs/built_in/pwd.c \
+				./srcs/built_in/echo.c
 
 OBJ			=	$(SRCS:.c=.o)
 

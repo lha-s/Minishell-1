@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:00:24 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/11 00:51:24 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/15 21:32:23 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,27 @@ int		write_errors(int option, char *str)
 	else if (option == 4)
 		write(1, "PATH error\n", 11);
 	return (-1);
+}
+
+int		write_variable(char *str, char c)
+{
+	int i;
+	char *var;
+	char *result;
+
+	i = 0;
+	while (str[i] != c && str[i] != ' ')
+		i++;
+	var = malloc(i + 1);
+	i = 0;
+	while (str[i] != c && str[i] != ' ')
+	{
+		var[i] = str[i];
+		i++;
+	}
+	var[i] = '\0';
+	result = getenv(var);
+	if (result)
+		write (1, result, ft_strlen(result));
+	return (i);
 }

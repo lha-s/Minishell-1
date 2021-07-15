@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 11:34:59 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/12 17:47:08 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/15 17:24:40 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,23 @@ void	option_finder(char *str, t_token **token)
 			}
 			else
 				reallocate_tab(&((*token)->option), str);
+		}
+	}
+}
+
+void	global_variable_finder(char **str, char **env)
+{
+	int i;
+
+	i = 0;
+	char *new_str;
+	while (env[i] != NULL)
+	{
+		if (strncmp(*str, env[i], ft_strlen(*str)) == 0)
+		{
+			new_str = ft_strdup(env[i] + ft_strlen(*str) + 1);
+			safe_free(str);
+			*str = new_str;
 		}
 	}
 }

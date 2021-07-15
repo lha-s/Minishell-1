@@ -6,20 +6,18 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:53:55 by alganoun          #+#    #+#             */
-/*   Updated: 2021/03/08 11:17:58 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/15 19:29:24 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int main()
+int		main(int argc, char **argv, char **env)
 {
+	(void)argc;
+	(void)argv;
 
-	char *test;
-
-	test = malloc(32);
-	test = malloc(32);
-	while (1)
-	{}
+	const char *result = getenv("PATH");
+	printf("%s\n", result);
 	return (0);
 }
