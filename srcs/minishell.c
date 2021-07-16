@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/10 00:08:20 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/13 18:43:25 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int		minishell(char **env)
 		{
 			pipping(&token);
 			printf_all(token);
-			ret = exec_cmd_(token, env);
+			ret = fork_process(token, env);
 			free_struct(&token);
 		}
 	}

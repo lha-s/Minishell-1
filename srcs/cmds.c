@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/10 18:19:58 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/13 23:41:51 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,10 @@ void	 cfg_piping(t_token *token, pid_t pid, int old_in)
 
 void	recursive_process(t_token *token, char **env)
 {
+	if (token->next && strncmp(token->next->operator, "|", 2) == 0)
+	{
+		fork_process(token->next->next, env);
+	}
 	if (is_builtin(token) == FALSE)
 		exec_cmd(token, env);
 	else
@@ -111,6 +115,7 @@ int fork_process(t_token *token, char **env)
 	pid_t pid = fork();
 	if (pid == 0)
 	{
+		write(1, "TEST\n", 5);
 		cfg_piping(token, pid, old_in);
 		recursive_process(token, env);
 		write_output("Error: fork had to be forced to quit\n");
