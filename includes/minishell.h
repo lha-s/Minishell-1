@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/15 21:30:44 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/16 16:49:25 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,5 @@ void		quote_remover(char **str);
 void		token_cleaning(t_token **token);
 //void		global_variable_replacement(char **str, char **env);
 int			write_variable(char *str, char c);
+int			env_(char **env);
 #endif

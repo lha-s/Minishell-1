@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/15 21:13:48 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/16 16:49:42 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int		cmd_selector(t_token *token, char **env)
 		else if (ft_strcmp(token->cmd, "unset") == 0)
 			return (TRUE);
 		else if (ft_strcmp(token->cmd, "env") == 0)
-			return (TRUE);
+			return (env_(env));
 		exec_cmd_(token, env);
 		token = token->next;
 	}

@@ -24,6 +24,7 @@ SRCS		= ./srcs/utils/common_utils.c \
 				./srcs/minishell.c \
 				./srcs/cmds.c \
 				./srcs/built_in/pwd.c \
+				./srcs/built_in/env.c \
 				./srcs/built_in/echo.c
 
 OBJ			=	$(SRCS:.c=.o)
