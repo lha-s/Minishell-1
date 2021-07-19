@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/13 23:41:51 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/19 18:53:17 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ void	exec_cmd(t_token *token, char **env)
 		tmp = ft_strjoin(path[i], "/");
 		tmp = ft_strjoin(tmp, ft_strnstr(token->cmd, cmd[0], ft_strlen(cmd[0])));
 		if (stat(tmp, &buf) == 0)
+		{
+			fprintf(stderr, "cmd=%s | out=%d\n", token->cmd, token->out);
 			execve(tmp, cmd, env);
+		}
 		i++;
 	}
 }
@@ -73,7 +76,9 @@ void	 cfg_piping(t_token *token, pid_t pid, int old_in)
 	if (token->out)
 	{
 		if (pid == 0)
+		{
 			dup2(token->fd[1], STDOUT_FILENO);
+		}
 		close(token->fd[1]);
 	}
 	if (token->in)
@@ -90,7 +95,7 @@ void	 cfg_piping(t_token *token, pid_t pid, int old_in)
 
 void	recursive_process(t_token *token, char **env)
 {
-	if (token->next && strncmp(token->next->operator, "|", 2) == 0)
+	if (token->next && strncmp(token->next->operator, "|", 1) == 0)
 	{
 		fork_process(token->next->next, env);
 	}
@@ -103,7 +108,10 @@ void	recursive_process(t_token *token, char **env)
 int fork_process(t_token *token, char **env)
 {
 	int old_in;
+	int wstatus;
+	int wret;
 	
+	wret = 0;
 	old_in = token->fd[0];
 	if (ft_strncmp(token->cmd, "exit", 4) == 0)
 		return (write_exit());
@@ -115,8 +123,11 @@ int fork_process(t_token *token, char **env)
 	pid_t pid = fork();
 	if (pid == 0)
 	{
-		write(1, "TEST\n", 5);
-		cfg_piping(token, pid, old_in);
+		if (token->in)
+			dup2(token->fd[0], STDOUT_FILENO);
+		if (token->out)
+			
+		//cfg_piping(token, pid, old_in);
 		recursive_process(token, env);
 		write_output("Error: fork had to be forced to quit\n");
 		exit(0);
@@ -125,7 +136,13 @@ int fork_process(t_token *token, char **env)
 	{
 		token->pids[token->pid_index++] = pid;
 		cfg_piping(token, pid, old_in);
-		wait(&pid);
+		waitpid(pid, &wstatus, 0);
+		if (WIFEXITED(wstatus))
+			wret = WEXITSTATUS(wstatus);
+		else if (WIFSIGNALED(wstatus))
+			wret =  128 + WTERMSIG(wstatus);
+		printf("EXIT STATUS=%d\n", wret);
+		//wait(&pid);
 	}
 	else
 		write_output("Error: fork failed, command failed\n");

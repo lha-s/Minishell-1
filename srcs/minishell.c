@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/13 18:43:25 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/19 15:50:17 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ void	printf_all(t_token *token) // Il faut supprimer cette fonction avant le ren
 				printf("ARG = %s\n", token->arg[i]);
 		else
 			printf("arg = NULL\n");
+		if (token->in)
+			printf("IN = %d\n", token->in);
+		else
+			printf("IN = NULL\n");
+		if (token->out)
+			printf("OUT = %d\n", token->out);
+		else
+			printf("OUT = NULL\n");
 		printf("\n");
 		token = token->next;
 	}
@@ -105,30 +113,41 @@ int		parsing(char *line, t_token **token_list)
 	return(0);
 }
 
-void	pipping(t_token **token)
+void	pipping(t_token *token) // ls(out) | (in)wc(out)| (in)wc
 {
-	if ((*token)->out == 1)
+	t_token *tmpA;
+	t_token *tmpB;
+
+	if (token->next)
 	{
-		(*token)->in = 1;
-		(*token)->out = 0;
+		tmpA = token;
+		tmpB = token->next;
+		while (tmpB->next)
+		{
+			if (tmpB->operator && strncmp(tmpB->operator, "|", 1) == 0)
+			{
+				tmpA->out = 1;
+				tmpB->next->in = 1;
+			}
+			tmpA = tmpA->next;
+			tmpB = tmpB->next;
+		}
 	}
-	if ((*token)->next && strncmp((*token)->next->operator, "|", 2) == 0)
-		(*token)->out = 1;
 }
 
-void	exit_status(t_token **token)
+void	exit_status(t_token *token)
 {
 	int i;
 	int wstatus;
 	int wret;
 
 	i = 0;
-	while (*token && i < (*token)->pid_index)
+	while (token && i < token->pid_index)
 	{
-		waitpid((*token)->pids[i], &wstatus, 0);
+		waitpid(token->pids[i], &wstatus, 0);
 		if (WIFEXITED(wstatus))
 			wret = WEXITSTATUS(wstatus);
-		(*token)->pids[i] = 0;
+		token->pids[i] = 0;
 		i++;
 	}
 }
@@ -147,13 +166,13 @@ int		minishell(char **env)
 		get_next_input(&line);
 		if (parsing(line, &token) != -1 && token != NULL)
 		{
-			pipping(&token);
+			pipping(token);
 			printf_all(token);
 			ret = fork_process(token, env);
 			free_struct(&token);
 		}
 	}
-	exit_status(&token);
+	exit_status(token);
 	safe_free(&line);
 	return (0);
 }
