@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/20 18:17:05 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/22 19:07:22 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,7 @@ void	exec_cmd(t_token *token, char **env)
 		tmp = ft_strjoin(tmp, ft_strnstr(token->cmd, cmd[0], ft_strlen(cmd[0])));
 		if (stat(tmp, &buf) == 0)
 		{
-			if (strncmp(token->cmd, "wc", 2) == 0)
-			{
-				fprintf(stderr, "lol");
-				close(token->fd[0]); //le programme termine pas, tenter de close
-			}
-			//fprintf(stderr, "cmd=%s | out=%d\n", token->cmd, token->out);
+			fprintf(stderr, "fd0=%d fd1=%d\n", token->fd[0], token->fd[1]);
 			execve(tmp, cmd, env);
 		}
 		i++;
@@ -141,7 +136,21 @@ int fork_process(t_token *token, char **env)
 			//fscanf(stdin, "%s\n", &buf);
 		fprintf(stderr, "WC=%s\n", &buf);
 		fprintf(stderr, "%s fd0= %d, fd1= %d\n", token->cmd, token->fd[0], token->fd[1]);
-		cfg_piping(token, pid, old_in);
+
+		if (token->out)
+		{
+			close(token->fd[0]);
+			dup2(token->fd[1], STDOUT_FILENO);
+		}
+		if (token->in)
+		{
+			close(token->fd[1]);
+			dup2(token->fd[0], STDIN_FILENO);
+		}
+		close(token->fd[0]);
+		close(token->fd[1]);
+
+		//cfg_piping(token, pid, old_in);
 		recursive_process(token, env);
 		write_output("Error: fork had to be forced to quit\n");
 		exit(0);
@@ -149,7 +158,21 @@ int fork_process(t_token *token, char **env)
 	else if (pid > 0)
 	{
 		token->pids[token->pid_index++] = pid;
-		cfg_piping(token, pid, old_in);
+
+		if (token->out)
+		{
+			close(token->fd[0]);
+			dup2(token->fd[1], STDOUT_FILENO);
+		}
+		if (token->in)
+		{
+			close(token->fd[1]);
+			dup2(token->fd[0], STDIN_FILENO);
+		}
+		close(token->fd[0]);
+		close(token->fd[1]);
+
+		//cfg_piping(token, pid, old_in);
 		waitpid(pid, &wstatus, 0);
 		if (WIFEXITED(wstatus))
 			wret = WEXITSTATUS(wstatus);
