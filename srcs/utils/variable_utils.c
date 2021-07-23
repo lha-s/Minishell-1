@@ -1,0 +1,173 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   variable_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/22 19:34:27 by allanganoun       #+#    #+#             */
+/*   Updated: 2021/07/23 18:20:28 by allanganoun      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minishell.h"
+
+char *my_getenv(char *name, char **env)
+{
+	int i;
+
+	i = 0;
+	while (env[i] != NULL)
+	{
+		if (strncmp(name, env[i], ft_strlen(name)) == 0
+			&& env[i][ft_strlen(name)] == '=')
+			return (env[i] + ft_strlen(name) + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+void	add_dollar(char ***tab)
+{
+	int i;
+	int j;
+	char *str;
+
+	i = 0;
+	while ((*tab)[i] != NULL)
+	{
+		j = 1;
+		str = malloc(ft_strlen((*tab)[i]) + 2);
+		str[0] = '$';
+		while ((*tab)[i][j - 1])
+		{
+			str[j] = (*tab)[i][j - 1];
+			j++;
+		}
+		str[j] == '\0';
+		free ((*tab)[i]);
+		(*tab)[i] = str;
+		str = NULL;
+		i++;
+	}
+}
+
+char **value_name_tab(char **env)
+{
+	int i;
+	int j;
+	char **tab;
+
+	i = 0;
+	tab = malloc(sizeof(char *) * (tablen(env) + 1));
+	while (env[i] != NULL)
+	{
+		tab[i] == ft_strdup(env[i]);
+		i++;
+	}
+	tab[i] == NULL;
+	i = 0;
+	while (tab[i] != NULL)
+	{
+		j = 0;
+		while (tab[i][j] != '=')
+			j++;
+		tab[i][j] == '\0';
+		i++;
+	}
+	add_dollar(&tab);
+	return (tab);
+}
+
+int		count_to_copy(char **str, char *to_replace)
+{
+	int i;
+	int count;
+
+	i = 0;
+	count = 0;
+	while (str[i]) // je peux raccourcir ici
+	{
+		if (str[i] == '$')
+		{
+			if (ft_strstr(&str[i], to_replace) == &str[i])
+				i += ft_strlen(to_replace) - 1;
+			else
+				count -= variable_len(&str[i]);
+		}
+		count++;
+		i++;
+	}
+	return (count);
+}
+
+int		count_word(char *str, char *to_replace)
+{
+	int i;
+	int count;
+
+	i = 0;
+	count = 0;
+	while (str[i]) // je peux raccourcir ici
+	{
+		if (str[i] == '$')
+		{
+			if (ft_strstr(&str[i], to_replace) == &str[i])
+			{
+				count++;
+				i += ft_strlen(to_replace) - 1;
+			}
+		}
+		i++;
+	}
+	return (count);
+}
+
+void	replace_word(char **str, char *name, char *value)
+{
+	int i;
+	int j;
+	int count;
+	char *result;
+
+	i = 0;
+	j = count_to_copy(*str, name);
+	count = count_word(*str, name);
+	result = malloc(j + count * (ft_strlen(value) - ft_strlen(name)));
+	j = 0;
+	while ((*str)[i])
+	{
+		if ((*str)[i] == '$')
+		{
+			if (ft_strstr(&((*str)[i]), name) == &((*str)[i]))
+			{
+				ft_strcpy(&result[j], value);
+				i += ft_strlen(name);
+				j += ft_strlen(value);
+			}
+			else if (ft_strstr(&((*str)[i]), name) != &((*str)[i]))
+				i += variable_len(&((*str)[i]));
+		}
+		else
+			result[j++] = (*str)[i++]; // il faut faire attention à la copie
+	}
+	result[j] = 0;
+	safe_free(str);
+	*str = result;
+}
+
+void	get_variable_value(char **str, char **env)
+{
+	char *tab;
+	int i;
+	int j;
+
+	tab = value_name_tab(env);
+	i = 0;
+	while(tab[i] != NULL)
+	{
+		replace_word(str, tab[i], my_getenv(tab[i] + 1, env));
+		i++;
+	}
+	check_str(str);
+}

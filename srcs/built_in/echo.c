@@ -6,13 +6,13 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 12:42:11 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/15 21:33:00 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/20 11:44:58 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int		echo_process(t_token *token)
+int		echo_process(t_token *token, char **env)
 {
 	int i;
 	int j;
@@ -28,7 +28,7 @@ int		echo_process(t_token *token)
 		while (token->arg[i][j])
 		{
 			if (token->arg[i][j] == '$')
-				j = write_variable(&(token->arg[i][j + 1]), quote) + j + 1;
+				j = write_variable(&(token->arg[i][j + 1]), quote, env) + j + 1;
 			write (1, &(token->arg[i][j]), 1);
 			j++;
 		}

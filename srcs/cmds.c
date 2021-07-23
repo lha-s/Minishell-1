@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/16 16:49:42 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/20 12:16:32 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,14 @@ int exec_cmd_(t_token* s, char* env[])
 	return (TRUE);
 }
 
-int		cmd_selector(t_token *token, char **env)
+int		cmd_selector(t_token *token, t_shell **shell)
 {
 	while (token != NULL)
 	{
 		if (ft_strcmp(token->cmd, "exit") == 0)
 			return (write_exit());
 		else if (ft_strcmp(token->cmd, "echo") == 0)
-			return (echo_process(token));
+			return (echo_process(token, (*shell)->env));
 		else if (ft_strcmp(token->cmd, "cd") == 0)
 			return (TRUE);
 		else if (ft_strcmp(token->cmd, "pwd") == 0)
@@ -99,8 +99,8 @@ int		cmd_selector(t_token *token, char **env)
 		else if (ft_strcmp(token->cmd, "unset") == 0)
 			return (TRUE);
 		else if (ft_strcmp(token->cmd, "env") == 0)
-			return (env_(env));
-		exec_cmd_(token, env);
+			return (env_((*shell)->env));
+		exec_cmd_(token, (*shell)->env);
 		token = token->next;
 	}
 	return (TRUE);

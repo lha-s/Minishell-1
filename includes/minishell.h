@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/16 16:49:25 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/23 12:08:22 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@
 
 static int num;
 
+typedef struct		s_shell
+{
+	char			**env;
+}					t_shell;
+
 typedef struct		s_token
 {
 	char			*cmd;
@@ -71,8 +76,9 @@ char		*get_next_word(char *line);
 int			is_option(char *str);
 int			display_txt(char *str);
 int			pwd_process();
-int			echo_process(t_token *token);
+int			echo_process(t_token *token, char **env);
 int			bash_process(/*t_cmd **cmd,*/ char **tab);
+int			export(char ***env, t_token *token);
 int			word_count(char *str);
 int			write_exec_errors();
 int			init_struct(t_token **token);
@@ -88,12 +94,15 @@ void		arg_finder(char *str, t_token **token);
 int			tablen(char **tab);
 int			reallocate_tab(char ***tab, char *str);
 void		free_struct(t_token **token);
-int			cmd_selector(t_token *token, char **env);
+int			cmd_selector(t_token *token, t_shell **shell);
 int 		exec_else_(t_token *token, char **env);
 int			exit_free(t_token **token, char **line);
 void		quote_remover(char **str);
 void		token_cleaning(t_token **token);
 //void		global_variable_replacement(char **str, char **env);
-int			write_variable(char *str, char c);
+int			write_variable(char *str, char c, char **env);
 int			env_(char **env);
+char 		*my_getenv(char *name, char **env);
+int			variable_len(char *str);
+char		**value_name_tab(char **env);
 #endif

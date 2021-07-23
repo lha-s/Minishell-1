@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:00:24 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/15 21:32:23 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/20 11:48:59 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		write_errors(int option, char *str)
 	return (-1);
 }
 
-int		write_variable(char *str, char c)
+int		write_variable(char *str, char c, char **env)
 {
 	int i;
 	char *var;
@@ -62,7 +62,7 @@ int		write_variable(char *str, char c)
 		i++;
 	}
 	var[i] = '\0';
-	result = getenv(var);
+	result = my_getenv(var, env);
 	if (result)
 		write (1, result, ft_strlen(result));
 	return (i);

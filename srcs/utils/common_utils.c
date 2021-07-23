@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 08:00:40 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/15 21:08:21 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/20 19:20:24 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,25 @@ int		 tablen(char **tab)
 	while (tab[i] != NULL)
 		i++;
 	return (i);
+}
+
+int		variable_len(char *str)
+{
+	int i;
+	int count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+		{
+			while (str[i] < 32 && str[i] > 47)
+				count++;
+		}
+		i++;
+	}
+	return (count);
 }
 
 int		display_txt(char *str)
@@ -67,15 +86,3 @@ int		reallocate_tab(char ***tab, char *str)
 	*tab = tmp;
 	return (0);
 }
-
-//void	global_variable_replacement(char **str, char **env)
-//{
-//	int i;
-//
-//	i = 0;
-//	char *var
-//	char quote;
-//	if ((*str)[i] == '"' || (*str)[i] == '\'')
-//		quote = (*str)[i++]
-//	if ()
-//}

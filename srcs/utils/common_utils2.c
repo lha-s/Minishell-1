@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 11:55:03 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/15 21:21:46 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/23 12:32:22 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,3 +102,4 @@ void	quote_remover(char **str)
 	if (len > 0)
 		quote_remover2(str, len);
 }
+
