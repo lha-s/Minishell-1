@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/24 16:24:48 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/24 16:29:34 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,12 +155,11 @@ int			run_pipe(t_token *token, char **env, int fdd)
 	return (fd[0]);
 }
 
-int fork_process(t_token *token, char **env, int old_in)
+int fork_process(t_token *token, char **env)
 {
 	int fdd;
 	
 	fdd = dup(0);
-	(void)old_in;
 	if (ft_strncmp(token->cmd, "exit", 4) == 0)
 		return (write_exit());
 	if (token->next == NULL)
