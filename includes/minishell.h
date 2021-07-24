@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/24 15:14:41 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/24 16:35:38 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@
 # define ID_ENV 5
 # define ID_BIN 6
 
-static int num;
-pid_t		g_pid;
+int		wstatus;
 
 typedef struct		s_token
 {
@@ -87,7 +86,7 @@ void		arg_finder(char *str, t_token **token);
 int			tablen(char **tab);
 int			reallocate_tab(char ***tab, char *str);
 void		free_struct(t_token **token);
-int 		fork_process(t_token *token, char **env, int old_in);
+int 		fork_process(t_token *token, char **env);
 int			is_builtin(t_token *token);
 int 		exec_else_(t_token *token, char **env);
 int			exit_free(t_token **token, char **line);

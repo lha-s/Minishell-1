@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/24 16:29:34 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/24 16:35:55 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	**strenv(char *s)
 	return (dst);
 }
 
-/*colle la commande à ses options*/
 char**	build_cmd(t_token *token)
 {
 	char **cmd;
@@ -40,7 +39,6 @@ char**	build_cmd(t_token *token)
 	return (cmd);
 }
 
-/*executer la commande dans le bon path*/
 void	exec_cmd(t_token *token, char **env)
 {
 	int i;
@@ -67,46 +65,23 @@ void	exec_builtin()
 	exit(0);
 }
 
-/*ouvre et ferme les pipe en fonction du type processus (parent ou enfant)*/
-void	 cfg_piping(t_token *token, pid_t pid, int old_in)
-{
-	if (token->out)
-	{
-		if (pid == 0)
-		{
-			dup2(token->fd[1], STDOUT_FILENO);
-		}
-		close(token->fd[1]);
-	}
-	if (token->in)
-	{
-		if (pid == 0)
-		{
-			dup2(old_in, STDIN_FILENO);
-			close(old_in);
-		}
-		close(token->fd[0]);
-	}
-}
-
 void	execution(t_token *token, char **env)
 {
-	g_pid = 0;
 	if (is_builtin(token) == FALSE)
 		exec_cmd(token, env);
 	else
 		exec_builtin();
 }
 
-void		status_child(void)
+void		status_child(pid_t pid)
 {
-	if (WIFEXITED(g_pid))
-		g_status = WEXITSTATUS(g_pid);
-	if (WIFSIGNALED(g_pid))
+	if (WIFEXITED(pid))
+		wstatus = WEXITSTATUS(pid);
+	if (WIFSIGNALED(pid))
 	{
-		g_status = WTERMSIG(g_pid);
-		if (g_status != 131)
-			g_status += 128;
+		wstatus = WTERMSIG(pid);
+		if (wstatus != 131)
+			wstatus += 128;
 	}
 }
 
@@ -149,7 +124,7 @@ int			run_pipe(t_token *token, char **env, int fdd)
 		//ft_exit(cmdargs, 0);
 	}
 	wait(&pid);
-	status_child();
+	status_child(pid);
 	close(fdd);
 	close(fd[1]);
 	return (fd[0]);
@@ -175,87 +150,6 @@ int fork_process(t_token *token, char **env)
 				break;
 		}
 	}
-	return (TRUE);
-}
-
-int fork_process_(t_token *token, char **env, int old_in)
-{
-	//int old_in;
-	int wstatus;
-	int wret;
-
-	wret = 0;
-	if (ft_strncmp(token->cmd, "exit", 4) == 0)
-		return (write_exit());
-	if (pipe(token->fd) < 0)
-	{
-		printf("Error: pipe failed\n");
-		return (FALSE);
-	}
-	if (old_in < 0)
-		old_in = token->fd[0];
-	fprintf(stderr, "old_in = %d\n", old_in);
-	pid_t pid = fork();
-	if (pid == 0)
-	{
-		char buf;
-		if (strncmp(token->cmd, "wc", 3) == 0)
-			//fscanf(stdin, "%s\n", &buf);
-		fprintf(stderr, "WC=%s\n", &buf);
-		fprintf(stderr, "%s fd0= %d, fd1= %d\n", token->cmd, token->fd[0], token->fd[1]);
-
-		if (token->out)
-		{
-			close(token->fd[0]);
-			dup2(token->fd[1], STDOUT_FILENO);
-			close(token->fd[1]);
-		}
-		if (token->in)
-		{
-			close(token->fd[1]);
-			dup2(token->fd[0], STDIN_FILENO);
-			close(token->fd[0]);
-		}
-
-		if (is_builtin(token) == FALSE)
-			exec_cmd(token, env);
-		else
-			exec_builtin();
-
-		//cfg_piping(token, pid, old_in);
-		write_output("Error: fork had to be forced to quit\n");
-		exit(0);
-	}
-	else if (pid > 0)
-	{
-		token->pids[token->pid_index++] = pid;
-
-		/*if (token->out)
-		{
-			close(token->fd[0]);
-			dup2(token->fd[1], STDOUT_FILENO);
-		}*/
-		if (token->in)
-		{
-			close(token->fd[0]); //fd[Ø] de pipe ls
-			dup2(token->fd[old_in], STDIN_FILENO);
-			close(token->fd[old_in]);
-		}
-
-		//cfg_piping(token, pid, old_in);
-		waitpid(pid, &wstatus, 0);
-		char buffer[BUFSIZ];
-		read(token->fd[0], buffer, BUFSIZ);
-		fprintf(stderr, "pipe=%s\n", buffer);
-		recursive_process(token, env, old_in);
-		if (WIFEXITED(wstatus))
-			wret = WEXITSTATUS(wstatus);
-		else if (WIFSIGNALED(wstatus))
-			wret =  128 + WTERMSIG(wstatus);
-		//printf("EXIT STATUS=%d\n", wret);
-	}
-	else
-		write_output("Error: fork failed, command failed\n");
 	return (TRUE);
 }
 
