@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:22:31 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/26 01:40:46 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/26 01:55:35 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void		pip(int *a, int *b, int *c, int close_all)
 	}
 }
 
-void	child(t_token *token, t_shell **shell, int fd[2], int *fdd) //retirer static
+void	child(t_token *token, t_shell **shell, int fd[2], int *fdd)
 {
 	int out;
 	int in;
