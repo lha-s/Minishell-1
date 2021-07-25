@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   write_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:00:24 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/20 11:48:59 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/26 00:53:58 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 ssize_t		write_output(char *str)
 {
 	return ((write(1, str, ft_strlen(str))) + (write(1, "\n", 1)));
-}
-
-int		write_exit()
-{
-	write(1, "Bash: exit", 10);
-	return (0);
 }
 
 int		write_errors(int option, char *str)
@@ -44,7 +38,7 @@ int		write_errors(int option, char *str)
 		write(1, "PATH error\n", 11);
 	return (-1);
 }
-
+/*
 int		write_variable(char *str, char c, char **env)
 {
 	int i;
@@ -67,3 +61,4 @@ int		write_variable(char *str, char c, char **env)
 		write (1, result, ft_strlen(result));
 	return (i);
 }
+*/
