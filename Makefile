@@ -20,12 +20,16 @@ SRCS		= ./srcs/utils/common_utils.c \
 				./srcs/utils/get_next.c \
 				./srcs/utils/struct_utils.c \
 				./srcs/utils/write_utils.c \
+				./srcs/utils/variable_utils.c \
 				./srcs/input_process.c \
 				./srcs/minishell.c \
 				./srcs/cmds.c \
 				./srcs/built_in/pwd.c \
 				./srcs/built_in/env.c \
+				./srcs/built_in/export.c \
+				./srcs/built_in/unset.c \
 				./srcs/built_in/echo.c
+
 
 OBJ			=	$(SRCS:.c=.o)
 

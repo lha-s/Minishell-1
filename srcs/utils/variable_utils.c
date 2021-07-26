@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 19:34:27 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/23 18:20:28 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/26 11:10:43 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	add_dollar(char ***tab)
 			str[j] = (*tab)[i][j - 1];
 			j++;
 		}
-		str[j] == '\0';
+		str[j] = '\0';
 		free ((*tab)[i]);
 		(*tab)[i] = str;
 		str = NULL;
@@ -52,7 +52,7 @@ void	add_dollar(char ***tab)
 	}
 }
 
-char **value_name_tab(char **env)
+char	**value_name_tab(char **env)
 {
 	int i;
 	int j;
@@ -62,24 +62,46 @@ char **value_name_tab(char **env)
 	tab = malloc(sizeof(char *) * (tablen(env) + 1));
 	while (env[i] != NULL)
 	{
-		tab[i] == ft_strdup(env[i]);
+		tab[i] = ft_strdup(env[i]);
 		i++;
 	}
-	tab[i] == NULL;
+	tab[i] = NULL;
 	i = 0;
 	while (tab[i] != NULL)
 	{
 		j = 0;
 		while (tab[i][j] != '=')
 			j++;
-		tab[i][j] == '\0';
+		tab[i][j] = '\0';
 		i++;
 	}
 	add_dollar(&tab);
 	return (tab);
 }
 
-int		count_to_copy(char **str, char *to_replace)
+int		value_existence(char *str, char **tab)
+{
+	int i;
+	char *tmp;
+
+	tmp = ft_strdup(str);
+	i = variable_len(tmp) + 1;
+	tmp[i] = '\0';
+	i = 0;
+	while (tab[i] != NULL)
+	{
+		if (ft_strcmp(tmp, tab[i]) == 0)
+		{
+			safe_free(&tmp);
+			return (1);
+		}
+		i++;
+	}
+	safe_free(&tmp);
+	return (0);
+}
+
+int		count_to_copy(char *str)
 {
 	int i;
 	int count;
@@ -89,13 +111,9 @@ int		count_to_copy(char **str, char *to_replace)
 	while (str[i]) // je peux raccourcir ici
 	{
 		if (str[i] == '$')
-		{
-			if (ft_strstr(&str[i], to_replace) == &str[i])
-				i += ft_strlen(to_replace) - 1;
-			else
-				count -= variable_len(&str[i]);
-		}
-		count++;
+			i += variable_len(&str[i]);
+		else
+			count++;
 		i++;
 	}
 	return (count);
@@ -112,7 +130,7 @@ int		count_word(char *str, char *to_replace)
 	{
 		if (str[i] == '$')
 		{
-			if (ft_strstr(&str[i], to_replace) == &str[i])
+			if (ft_strstr(&(str[i]), to_replace) == &(str[i]))
 			{
 				count++;
 				i += ft_strlen(to_replace) - 1;
@@ -123,7 +141,7 @@ int		count_word(char *str, char *to_replace)
 	return (count);
 }
 
-void	replace_word(char **str, char *name, char *value)
+int		replace_word(char **str, char *name, char *value, char **tab)
 {
 	int i;
 	int j;
@@ -131,11 +149,12 @@ void	replace_word(char **str, char *name, char *value)
 	char *result;
 
 	i = 0;
-	j = count_to_copy(*str, name);
+	j = count_to_copy(*str);
 	count = count_word(*str, name);
-	result = malloc(j + count * (ft_strlen(value) - ft_strlen(name)));
+	result = malloc(j + count * ft_strlen(value));
 	j = 0;
-	while ((*str)[i])
+	count = 0;
+	while ((*str)[i] != '\0')
 	{
 		if ((*str)[i] == '$')
 		{
@@ -144,30 +163,30 @@ void	replace_word(char **str, char *name, char *value)
 				ft_strcpy(&result[j], value);
 				i += ft_strlen(name);
 				j += ft_strlen(value);
+				count = 1;
 			}
-			else if (ft_strstr(&((*str)[i]), name) != &((*str)[i]))
-				i += variable_len(&((*str)[i]));
+			else if (value_existence(&((*str)[i]), tab) == 0)
+				i += variable_len(&((*str)[i])) + 1;
 		}
-		else
-			result[j++] = (*str)[i++]; // il faut faire attention à la copie
+		result[j++] = (*str)[i++]; // il faut faire attention à la copie
 	}
-	result[j] = 0;
+	result[j] = '\0';
 	safe_free(str);
 	*str = result;
+	return (count);
 }
 
 void	get_variable_value(char **str, char **env)
 {
-	char *tab;
+	char **tab;
 	int i;
-	int j;
-
+	(void)str;
 	tab = value_name_tab(env);
 	i = 0;
 	while(tab[i] != NULL)
 	{
-		replace_word(str, tab[i], my_getenv(tab[i] + 1, env));
+		replace_word(str, tab[i], my_getenv(tab[i] + 1, env), tab);
 		i++;
 	}
-	check_str(str);
+	free_tab(&tab);
 }

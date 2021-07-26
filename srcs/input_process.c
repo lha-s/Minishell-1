@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 11:34:59 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/15 17:24:40 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/25 16:01:22 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int		operator_finder(char *str, t_token **token)
 	return (0);
 }
 
-void	option_finder(char *str, t_token **token)
+void	 option_finder(char *str, t_token **token)
 {
 	int i;
 
 	i = 0;
 	if (str !=	NULL)
 	{
-		if (str[i] == '"') //gérer les erreurs de guilllemets ouverts ici
+		if (str[i] == '"') // il faut que je regarde pour mieux parser les options.
 			i++;
 		if ((ft_strcmp((*token)->cmd, "echo") != 0
 			&& str[i] == '-' && str[i + 1] != '\0')

@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/20 12:34:34 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/22 21:06:30 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/26 17:11:13 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,52 +19,26 @@ int		check_name(char *name)
 	i = 0;
 	while (name[i])
 	{
-		if (name[i] == '=' && i < 0)
+		if (name[i] == '=' && (i > 0))
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-void	set_variable(char *name)
+int		export_process(t_token *token, char ***env)
 {
 	int i;
-	char *begin;
-	char *variable;
-
-	i = 0;
-	while (name[i] && name[i] !=  '=')
-		i++;
-	begin = malloc(i + 2);
-	i = 0;
-	while (name[i] && name[i] !=  '=')
-	{
-		begin[i] = name[i];
-		i++;
-	}
-	begin[i++] = '=';
-	begin[i] = '\0';
-	variable = variable
-
-}
-
-int		export(char ***env, t_token *token)
-{
-	int i;
-	int j;
+	char *str;
 
 	i = 0;
 	while (token->arg[i] != NULL)
 	{
-		j = 0;
-		if (check_name(token->arg[i]) == 1)
+		str = ft_strdup(token->arg[i]);
+		if (check_name(str) == 1)
 		{
-			while (token->arg[i][j])
-			{
-
-				j++;
-			}
-			reallocate_tab(env, token->arg[i]);
+			get_variable_value(&str, *env);
+			reallocate_tab(env, str);
 		}
 		i++;
 	}

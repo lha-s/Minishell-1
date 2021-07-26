@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/20 12:16:32 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/26 16:59:46 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,11 @@ int		cmd_selector(t_token *token, t_shell **shell)
 		else if (ft_strcmp(token->cmd, "pwd") == 0)
 			return (pwd_process());
 		else if (ft_strcmp(token->cmd, "export") == 0)
-			return (TRUE);
+			return (export_process(token, &((*shell)->env)));
 		else if (ft_strcmp(token->cmd, "unset") == 0)
-			return (TRUE);
+			return (unset_process(token, &((*shell)->env)));
 		else if (ft_strcmp(token->cmd, "env") == 0)
-			return (env_((*shell)->env));
+			return (env_process((*shell)->env));
 		exec_cmd_(token, (*shell)->env);
 		token = token->next;
 	}

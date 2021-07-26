@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/20 12:29:03 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/25 21:34:19 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int		input_process(char **tab, t_token **token)
 		j = 0;
 		if (space_into_dot(&tab[i]) == -1)
 			return (-1);
-		pre_token = ft_split(tab[i], '.');
+		pre_token = ft_split(tab[i], 13);
 		input_process2(pre_token, token);
 		//token_cleaning(token);
 		i++;
@@ -111,7 +111,9 @@ int		parsing(char *line, t_token **token_list)
 
 	if (*token_list != NULL)
 		free_struct(token_list);
-	tab = ft_split(line, ';');
+	if (coma_into_dot(&line) == -1)
+		return (-1);
+	tab = ft_split(line, 13);
 	if (!tab)
 		return (write_errors(3, NULL));
 	while (i < tablen(tab))

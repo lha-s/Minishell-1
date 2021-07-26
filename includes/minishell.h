@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/23 12:08:22 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/26 17:00:47 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,9 @@ int			display_txt(char *str);
 int			pwd_process();
 int			echo_process(t_token *token, char **env);
 int			bash_process(/*t_cmd **cmd,*/ char **tab);
-int			export(char ***env, t_token *token);
+int			export_process(t_token *token, char ***env);
+int			unset_process(t_token *token, char ***env);
+int			env_process(char **env);
 int			word_count(char *str);
 int			write_exec_errors();
 int			init_struct(t_token **token);
@@ -88,6 +90,7 @@ t_token		*token_last(t_token *token);
 void		token_add_back(t_token **atoken, t_token **new);
 t_token		*token_new();
 int			space_into_dot(char **str);
+int			coma_into_dot(char **str);
 void		option_finder(char *str, t_token **token);
 int			operator_finder(char *str, t_token **token);
 void		arg_finder(char *str, t_token **token);
@@ -99,10 +102,11 @@ int 		exec_else_(t_token *token, char **env);
 int			exit_free(t_token **token, char **line);
 void		quote_remover(char **str);
 void		token_cleaning(t_token **token);
-//void		global_variable_replacement(char **str, char **env);
 int			write_variable(char *str, char c, char **env);
-int			env_(char **env);
+
 char 		*my_getenv(char *name, char **env);
 int			variable_len(char *str);
 char		**value_name_tab(char **env);
+void		get_variable_value(char **str, char **env);
+int			check_name(char *name);
 #endif

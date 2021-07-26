@@ -6,11 +6,50 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 11:55:03 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/23 12:32:22 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/25 21:34:31 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+
+int		coma_into_dot(char **str)
+{
+	int i;
+
+	i = 0;
+	while ((*str)[i])
+	{
+		if ((*str)[i] == '"') // il faut regler le soucis des guillemets pour les arguments
+		{
+			i++;
+			while ((*str)[i] && (*str)[i] != '"')
+			{
+				if ((*str)[i] == '\\' && (*str)[i + 1] == '"')
+					i++;
+				i++;
+			}
+			if ((*str)[i] == '\0')
+				return (write_errors(3, *str));
+		}
+		else if ((*str)[i] == '\'')
+		{
+			i++;
+			while ((*str)[i] && (*str)[i] != '\'')
+			{
+				if ((*str)[i] == '\\' && (*str)[i + 1] == '\'')
+					i++;
+				i++;
+			}
+			if ((*str)[i] == '\0')
+				return (write_errors(3, *str));
+		}
+		else if ((*str)[i] == ';')
+			(*str)[i] = 13;
+		i++;
+	}
+	return (0);
+}
 
 int		space_into_dot(char **str)
 {
@@ -44,7 +83,7 @@ int		space_into_dot(char **str)
 				return (write_errors(3, *str));
 		}
 		else if ((*str)[i] == ' ')
-			(*str)[i] = '.';
+			(*str)[i] = 13;
 		i++;
 	}
 	return (0);
