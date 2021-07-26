@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/27 00:59:57 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/27 01:08:50 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		exec_builtin(t_token *token, t_shell **shell)
 	else if (ft_strcmp(token->cmd, "unset") == 0)
 		return;
 	else if (ft_strcmp(token->cmd, "env") == 0)
-		env_((*shell)->env);
+		env_process((*shell)->env);
 	return;
 }
 
