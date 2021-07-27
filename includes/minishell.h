@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/27 01:10:40 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/26 17:00:47 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 # define ID_ENV 5
 # define ID_BIN 6
 
-int wret;
+static int num;
 
 typedef struct		s_shell
 {
@@ -97,6 +97,8 @@ void		arg_finder(char *str, t_token **token);
 int			tablen(char **tab);
 int			reallocate_tab(char ***tab, char *str);
 void		free_struct(t_token **token);
+int			cmd_selector(t_token *token, t_shell **shell);
+int 		exec_else_(t_token *token, char **env);
 int			exit_free(t_token **token, char **line);
 void		quote_remover(char **str);
 void		token_cleaning(t_token **token);
@@ -107,10 +109,4 @@ int			variable_len(char *str);
 char		**value_name_tab(char **env);
 void		get_variable_value(char **str, char **env);
 int			check_name(char *name);
-int 		run_process(t_token *token, t_shell **shell);
-int			fork_process(t_token *token, t_shell **shell, int fdd);
-void		execution(t_token *token, t_shell **shell);
-void		exec_cmd(t_token *token, t_shell **shell);
-void		exit_prog(t_token **token, int exit_message);
-
 #endif

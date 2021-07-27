@@ -3,18 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   write_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:00:24 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/27 01:01:17 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/20 11:48:59 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+
 ssize_t		write_output(char *str)
 {
 	return ((write(1, str, ft_strlen(str))) + (write(1, "\n", 1)));
+}
+
+int		write_exit()
+{
+	write(1, "Bash: exit", 10);
+	return (0);
 }
 
 int		write_errors(int option, char *str)

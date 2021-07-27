@@ -24,8 +24,6 @@ SRCS		= ./srcs/utils/common_utils.c \
 				./srcs/input_process.c \
 				./srcs/minishell.c \
 				./srcs/cmds.c \
-				./srcs/execution.c \
-				./srcs/piping.c \
 				./srcs/built_in/pwd.c \
 				./srcs/built_in/env.c \
 				./srcs/built_in/export.c \

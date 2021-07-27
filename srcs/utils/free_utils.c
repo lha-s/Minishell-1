@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 09:06:00 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/27 01:09:47 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/06 16:30:57 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,4 @@ int		exit_free(t_token **token, char **line)
 	free_struct(token);
 	safe_free(line);
 	return (-1);
-}
-
-void	exit_prog(t_token **token, int exit_message)
-{
-	if (token)
-		free_struct(token);
-	if (exit_message == TRUE)
-		ft_putstr_fd("Bash: exit\n", STDERR_FILENO);
-	exit(wret);
 }

@@ -3,81 +3,111 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/27 01:08:50 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/26 16:59:46 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int run_process(t_token *token, t_shell **shell)
+char	**strenv(char *s)
 {
-	int fdd;
-		
-	fdd = dup(0);
-	if (ft_strcmp(token->cmd, "exit") == 0)
-		exit_prog(&token, TRUE);
-	if (token->next == NULL)
-		fdd = fork_process(token, shell, fdd);
-	else
+	char **dst;
+	dst = ft_split(getenv(s) + ft_strlen(s), ':');
+	return (dst);
+}
+
+void	exec_cmd(t_token *token, char **env)
+{
+	int i;
+	char **path;
+	char *tmp;
+	struct stat buf;
+	char **cmd;
+
+	cmd = ft_split(token->cmd, ' ');
+	i = 0;
+	path = strenv("PATH=");
+	while (path[i])
 	{
-		while ((token->next && strncmp(token->next->operator, "|", 2) == 0) || token->in)
-		{
-			fdd = fork_process(token, shell, fdd);
-			if (token->out)
-				token = token->next->next;
-			else
-				break; //changer ça
-		}
+		tmp = ft_strjoin(path[i], "/");
+		tmp = ft_strjoin(tmp, ft_strnstr(token->cmd, cmd[0], ft_strlen(cmd[0])));
+		if (stat(tmp, &buf) == 0)
+			execve(tmp, cmd, env);
+		i++;
 	}
-	close(fdd);
+}
+
+int exec_cmd_(t_token* s, char* env[])
+{
+
+	int old_in = s->fd[0];
+
+	if (s->out && pipe(s->fd) < 0)
+	{
+		printf("pipe failed\n");
+		return (write_errors(3, NULL));
+	}
+
+	pid_t pid = fork();
+	if (pid == 0)
+	{
+			if (s->out)
+			{
+				dup2(s->fd[1], STDOUT_FILENO);
+				close(s->fd[1]);
+			}
+			if (s->in)
+			{
+				dup2(old_in, STDIN_FILENO);
+				close(old_in);
+			}
+			exec_cmd(s, env);
+			// error
+			exit(1);
+	}
+	else if (pid > 0)
+	{
+		s->pids[s->pid_index++] = pid;
+
+		if (s->out)
+			close(s->fd[1]);
+		if (s->in)
+			close(s->fd[0]);
+	}
+	else
+		; // error
 	return (TRUE);
 }
 
-void		exec_builtin(t_token *token, t_shell **shell)
+int		cmd_selector(t_token *token, t_shell **shell)
 {
-	if (ft_strcmp(token->cmd, "exit") == 0)
-		exit_prog(&token, FALSE);
-	else if (ft_strcmp(token->cmd, "echo") == 0)
-		echo_process(token, (*shell)->env);
-	else if (ft_strcmp(token->cmd, "cd") == 0)
-		return;
-	else if (ft_strcmp(token->cmd, "pwd") == 0)
-		pwd_process();
-	else if (ft_strcmp(token->cmd, "export") == 0)
-		return;
-	else if (ft_strcmp(token->cmd, "unset") == 0)
-		return;
-	else if (ft_strcmp(token->cmd, "env") == 0)
-		env_process((*shell)->env);
-	return;
+	while (token != NULL)
+	{
+		if (ft_strcmp(token->cmd, "exit") == 0)
+			return (write_exit());
+		else if (ft_strcmp(token->cmd, "echo") == 0)
+			return (echo_process(token, (*shell)->env));
+		else if (ft_strcmp(token->cmd, "cd") == 0)
+			return (TRUE);
+		else if (ft_strcmp(token->cmd, "pwd") == 0)
+			return (pwd_process());
+		else if (ft_strcmp(token->cmd, "export") == 0)
+			return (export_process(token, &((*shell)->env)));
+		else if (ft_strcmp(token->cmd, "unset") == 0)
+			return (unset_process(token, &((*shell)->env)));
+		else if (ft_strcmp(token->cmd, "env") == 0)
+			return (env_process((*shell)->env));
+		exec_cmd_(token, (*shell)->env);
+		token = token->next;
+	}
+	return (TRUE);
 }
 
-int		is_builtin(t_token *token)
-{
-	if (ft_strcmp(token->cmd, "exit") == 0)
-		return (TRUE);
-	else if (ft_strcmp(token->cmd, "echo") == 0)
-		return (TRUE);
-	else if (ft_strcmp(token->cmd, "cd") == 0)
-		return (TRUE);
-	else if (ft_strcmp(token->cmd, "pwd") == 0)
-		return (TRUE);
-	else if (ft_strcmp(token->cmd, "export") == 0)
-		return (TRUE);
-	else if (ft_strcmp(token->cmd, "unset") == 0)
-		return (TRUE);
-	else if (ft_strcmp(token->cmd, "env") == 0)
-		return (TRUE);
-	return (FALSE);
-}
-
-void	execution(t_token *token, t_shell **shell)
-{
-	if (is_builtin(token) == FALSE)
-		exec_cmd(token, shell);
-	else
-		exec_builtin(token, shell);
-}
+/*
+http://www.zeitoun.net/articles/communication-par-tuyau/start
+https://linux.die.net/man/2/waitpid
+http://manpagesfr.free.fr/man/man2/fork.2.html
+*/
