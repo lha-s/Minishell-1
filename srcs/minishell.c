@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/25 21:34:19 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/27 20:49:29 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 void	printf_all(t_token *token) // Il faut supprimer cette fonction avant le rendu
 {
@@ -29,6 +28,14 @@ void	printf_all(t_token *token) // Il faut supprimer cette fonction avant le ren
 				printf("ARG = %s\n", token->arg[i]);
 		else
 			printf("arg = NULL\n");
+		if (token->in)
+			printf("IN = %d\n", token->in);
+		else
+			printf("IN = NULL\n");
+		if (token->out)
+			printf("OUT = %d\n", token->out);
+		else
+			printf("OUT = NULL\n");
 		printf("\n");
 		token = token->next;
 	}
@@ -129,29 +136,23 @@ int		parsing(char *line, t_token **token_list)
 
 void	piping(t_token **token)
 {
-	if ((*token)->out == 1)
-	{
-		(*token)->in = 1;
-		(*token)->out = 0;
-	}
-	if ((*token)->next && strncmp((*token)->next->operator, "|", 2) == 0)
-		(*token)->out = 1;
-}
+	t_token *tmpA;
+	t_token *tmpB;
 
-void	exit_status(t_token **token)
-{
-	int i;
-	int wstatus;
-	int wret;
-
-	i = 0;
-	while (*token && i < (*token)->pid_index)
+	if ((*token)->next)
 	{
-		waitpid((*token)->pids[i], &wstatus, 0);
-		if (WIFEXITED(wstatus))
-			wret = WEXITSTATUS(wstatus);
-		(*token)->pids[i] = 0;
-		i++;
+		tmpA = (*token);
+		tmpB = (*token)->next;
+		while (tmpB->next)
+		{
+			if (tmpB->operator && strncmp(tmpB->operator, "|", 1) == 0)
+			{
+				tmpA->out = 1;
+				tmpB->next->in = 1;
+			}
+			tmpA = tmpA->next;
+			tmpB = tmpB->next;
+		}
 	}
 }
 
@@ -171,11 +172,11 @@ int		minishell(t_shell **shell)
 		{
 			piping(&token);
 			printf_all(token);
-			ret = cmd_selector(token, shell);
+			ret = run_process(token, shell);
 			free_struct(&token);
 		}
 	}
-	exit_status(&token);
+	//exit_status(&token);
 	safe_free(&line);
 	return (0);
 }
