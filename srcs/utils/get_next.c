@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:19:07 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/27 01:00:52 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/27 17:20:24 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,16 @@ void		prompt(void)
 	size_t	slash;
 
 	tmp = getenv("USER");
-	ft_putstr_fd("\033[32;1m", 1);
+	ft_putstr_fd("\e[1;34m", 1);
 	ft_putstr_fd(tmp, 1);
-	ft_putstr_fd("@\033[0m:", 1);
+	ft_putstr_fd("\033[0m:", 1);
 	tmp = getcwd(NULL, 0);
 	len = ft_strlen(tmp);
 	slash = 0;
-	while (--len && slash < 3)
+	while (--len && slash < 1)
 		if (tmp[len] == '/')
 			slash++;
-	ft_putstr_fd("\e[1;34m", 1);
+	ft_putstr_fd("\033[32;1m", 1);
 	while (tmp[++len])
 		ft_putchar_fd(tmp[len], 1);
 	ft_putstr_fd("$\e[0m ", 1);
