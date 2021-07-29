@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/27 20:49:29 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/29 16:47:27 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		input_process2(char **pre_token, t_token **token)
 	i = 1;
 	(*token)->cmd = pre_token[0];
 	quote_remover(&((*token)->cmd));
-	while (pre_token[i] != NULL)
+	while (pre_token && pre_token[i] != NULL)
 	{
 		quote_remover(&(pre_token[i]));
 		if (operator_finder(pre_token[i], token) == 1)
@@ -88,7 +88,7 @@ int		input_process2(char **pre_token, t_token **token)
 	return (0);
 }
 
-int		input_process(char **tab, t_token **token)
+int		input_process(char *tab, t_token **token)
 {
 	int i;
 	int j;
@@ -96,16 +96,12 @@ int		input_process(char **tab, t_token **token)
 	i = 0;
 	char **pre_token;
 	(void)token;
-	while (tab[i] != NULL)
-	{
-		j = 0;
-		if (space_into_dot(&tab[i]) == -1)
-			return (-1);
-		pre_token = ft_split(tab[i], 13);
-		input_process2(pre_token, token);
-		//token_cleaning(token);
-		i++;
-	}
+	j = 0;
+	printf("TEST = %s\n", tab);
+	if (space_into_dot(&tab) == -1)
+		return (-1);
+	pre_token = ft_split(tab, 13);
+	input_process2(pre_token, token);
 	return (0);
 }
 
@@ -127,7 +123,7 @@ int		parsing(char *line, t_token **token_list)
 	{
 		init_struct(&new);
 		token_add_back(token_list, &new);
-		if (input_process(tab, &new) == -1)
+		if (input_process(tab[i], &new) == -1)
 			return (-1);
 		i++;
 	}

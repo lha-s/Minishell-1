@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 11:55:03 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/25 21:34:31 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/29 16:16:16 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,19 +126,22 @@ void	quote_remover(char **str)
 
 	i = 0;
 	len = 0;
-	while ((*str)[i] && (*str)[0] == '"')
+	if (*str)
 	{
-		if ((*str)[i] != '"')
-			len++;
-		i++;
+		while ((*str)[i] && (*str)[0] == '"')
+		{
+			if ((*str)[i] != '"')
+				len++;
+			i++;
+		}
+		while ((*str)[i] && (*str)[0] == '\'')
+		{
+			if ((*str)[i] != '\'')
+				len++;
+			i++;
+		}
+		if (len > 0)
+			quote_remover2(str, len);
 	}
-	while ((*str)[i] && (*str)[0] == '\'')
-	{
-		if ((*str)[i] != '\'')
-			len++;
-		i++;
-	}
-	if (len > 0)
-		quote_remover2(str, len);
 }
 
