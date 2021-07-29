@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/27 20:49:15 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/29 17:16:24 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int run_process(t_token *token, t_shell **shell)
 {
 	int fdd;
-		
+
 	fdd = dup(0);
 	if (ft_strcmp(token->cmd, "exit") == 0)
 		exit_prog(&token, TRUE);
@@ -47,9 +47,9 @@ void		exec_builtin(t_token *token, t_shell **shell)
 	else if (ft_strcmp(token->cmd, "pwd") == 0)
 		pwd_process();
 	else if (ft_strcmp(token->cmd, "export") == 0)
-		return;
+		export_process(token, &(*shell)->env);
 	else if (ft_strcmp(token->cmd, "unset") == 0)
-		return;
+		unset_process(token, &(*shell)->env);
 	else if (ft_strcmp(token->cmd, "env") == 0)
 		env_process((*shell)->env);
 	return;

@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/29 16:47:27 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/29 17:25:51 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int		input_process2(char **pre_token, t_token **token)
 	return (0);
 }
 
-int		input_process(char *tab, t_token **token)
+int		input_process(char *line, t_token **token)
 {
 	int i;
 	int j;
@@ -97,10 +97,9 @@ int		input_process(char *tab, t_token **token)
 	char **pre_token;
 	(void)token;
 	j = 0;
-	printf("TEST = %s\n", tab);
-	if (space_into_dot(&tab) == -1)
+	if (space_into_dot(&line) == -1)
 		return (-1);
-	pre_token = ft_split(tab, 13);
+	pre_token = ft_split(line, 13);
 	input_process2(pre_token, token);
 	return (0);
 }
@@ -108,25 +107,15 @@ int		input_process(char *tab, t_token **token)
 int		parsing(char *line, t_token **token_list)
 {
 	int		i;
-	char	**tab;
 	t_token	*new;
 	i = 0;
 
 	if (*token_list != NULL)
-		free_struct(token_list);
-	if (coma_into_dot(&line) == -1)
+	free_struct(token_list);
+	init_struct(&new);
+	token_add_back(token_list, &new);
+	if (input_process(line, &new) == -1)
 		return (-1);
-	tab = ft_split(line, 13);
-	if (!tab)
-		return (write_errors(3, NULL));
-	while (i < tablen(tab))
-	{
-		init_struct(&new);
-		token_add_back(token_list, &new);
-		if (input_process(tab[i], &new) == -1)
-			return (-1);
-		i++;
-	}
 	return(0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:19:07 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/27 20:49:41 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/29 20:20:10 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,23 @@ int		get_next_line(int fd, char **line)
 	return (r);
 }
 
-void		prompt(void)
+char	*prompt(void)
 {
 	char	*tmp;
+	char	*line;
 	size_t	len;
-	size_t	slash;
 
-	tmp = getenv("USER");
-	ft_putstr_fd("\e[1;34m", 1);
-	ft_putstr_fd(tmp, 1);
-	ft_putstr_fd("\033[0m:", 1);
+	line = ft_strjoin("\e[1;34m(", getenv("USER"));
+	line = ft_strjoin(line, ")\033[0m:");
 	tmp = getcwd(NULL, 0);
 	len = ft_strlen(tmp);
-	slash = 0;
-	while (--len && slash < 1)
-		if (tmp[len] == '/')
-			slash++;
-	ft_putstr_fd("\033[32;1m", 1);
-	while (tmp[++len])
-		ft_putchar_fd(tmp[len], 1);
-	ft_putstr_fd("$\e[0m ", 1);
-	free(tmp);
+	while (tmp[len] != '/')
+		len--;
+	tmp = &tmp[len + 1];
+	line = ft_strjoin(line, "\033[32;1m ");
+	line = ft_strjoin(line, tmp);
+	line = ft_strjoin(line, "$\e[0m ");
+	return (line);
 }
 
 void	get_next_input(char **line)
@@ -73,7 +69,6 @@ void	get_next_input(char **line)
 		safe_free(line);
 		*line = NULL;
 	}
-	prompt();
-	*line = readline("");
+	*line = readline(prompt());
 	add_history(*line);
 }
