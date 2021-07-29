@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/27 20:48:29 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/29 21:52:47 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,47 +66,47 @@ typedef struct		s_token
 }					t_token;
 
 /*------------UTILS---------------*/
-int			get_next_line(int fd, char **line);
+
 void		get_next_input(char **line);
-int			write_errors(int option, char *str);
-size_t		ft_strlen(const char *str);
-ssize_t		write_output(char *str);
-int			write_exit();
-char		*get_next_word(char *line);
-int			is_option(char *str);
-int			display_txt(char *str);
-int			pwd_process();
-int			echo_process(t_token *token, char **env);
-int			bash_process(/*t_cmd **cmd,*/ char **tab);
-int			export_process(t_token *token, char ***env);
-int			unset_process(t_token *token, char ***env);
-int			env_process(char **env);
-int			word_count(char *str);
-int			write_exec_errors();
 int			init_struct(t_token **token);
 void		free_tab(char ***tab);
 void		safe_free(char **str);
-t_token		*token_last(t_token *token);
-void		token_add_back(t_token **atoken, t_token **new);
-t_token		*token_new();
 int			space_into_dot(char **str);
 int			coma_into_dot(char **str);
-void		option_finder(char *str, t_token **token);
-int			operator_finder(char *str, t_token **token);
-void		arg_finder(char *str, t_token **token);
 int			tablen(char **tab);
 int			reallocate_tab(char ***tab, char *str);
 void		free_struct(t_token **token);
 int			exit_free(t_token **token, char **line);
 void		quote_remover(char **str);
-void		token_cleaning(t_token **token);
-int			write_variable(char *str, char c, char **env);
-
 char 		*my_getenv(char *name, char **env);
 int			variable_len(char *str);
 char		**value_name_tab(char **env);
 void		get_variable_value(char **str, char **env);
 int			check_name(char *name);
+
+/*------------DISPLAY---------------*/
+int			display_txt(char *str);
+ssize_t		write_output(char *str);
+int			write_exit();
+int			write_errors(int option, char *str);
+int			write_exec_errors();
+
+/*------------PARSING---------------*/
+t_token		*token_last(t_token *token);
+void		token_add_back(t_token **atoken, t_token **new);
+t_token		*token_new();
+void		option_finder(char *str, t_token **token);
+int			operator_finder(char *str, t_token **token);
+void		arg_finder(char *str, t_token **token);
+
+/*------------BUILT-INS---------------*/
+int			pwd_process();
+int			echo_process(t_token *token, char **env);
+int			export_process(t_token *token, char ***env);
+int			unset_process(t_token *token, char ***env);
+int			env_process(char **env);
+
+/*------------EXECUTION---------------*/
 int 		run_process(t_token *token, t_shell **shell);
 int			fork_process(t_token *token, t_shell **shell, int fdd);
 void		execution(t_token *token, t_shell **shell);

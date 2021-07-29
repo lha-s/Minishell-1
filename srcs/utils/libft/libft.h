@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 17:21:55 by alganoun          #+#    #+#             */
-/*   Updated: 2021/03/04 11:52:38 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/29 21:55:58 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),\
 					void (*del)(void *));
 void				ft_rm_whitespace(char **str);
+int					get_next_line(int fd, char **line);
 
 #endif

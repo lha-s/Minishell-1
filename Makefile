@@ -17,7 +17,7 @@ LIBFT		=	$(LIBFT_PATH)/libft.a
 SRCS		= ./srcs/utils/common_utils.c \
 				./srcs/utils/common_utils2.c \
 				./srcs/utils/free_utils.c \
-				./srcs/utils/get_next.c \
+				./srcs/utils/display.c \
 				./srcs/utils/struct_utils.c \
 				./srcs/utils/write_utils.c \
 				./srcs/utils/variable_utils.c \
@@ -51,7 +51,7 @@ $(NAME): $(OBJ)
 
 process: $(OBJ)
 	@$(CC) $(FLAGS) $(INC) -lreadline -o $(NAME) $(OBJ) $(LIBFT)
-	@echo "\033[0;32mMinihell compilation was succesfull.\033[0m"
+	@make clean && echo "\033[0;32mMinishell compilation was succesfull.\033[0m"
 
 %.o: %.c
 	@$(CC) $(FLAGS) $(INC) -o $@ -c $<
@@ -59,7 +59,7 @@ process: $(OBJ)
 clean:
 	make -C $(LIBFT_PATH) $@
 	rm -f $(OBJ)
-	@echo "\033[0;31mMinihell object files deletion complete\033[0m"
+	@echo "\033[0;31mMinishell object files deletion complete\033[0m"
 
 test:
 	valgrind --tool=memcheck --leak-check=full --leak-resolution=high --show-reachable=no ./$(NAME)
