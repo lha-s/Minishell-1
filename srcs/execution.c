@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 20:36:39 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/29 05:41:22 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/30 19:18:34 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**strenv(char *s)
+char	**strenv(char *s, char **env)
 {
 	char **dst;
-	dst = ft_split(getenv(s) + ft_strlen(s), ':');
+	dst = ft_split(my_getenv(s, env) + ft_strlen(s), ':');
 	return (dst);
 }
 
@@ -57,16 +57,18 @@ void	exec_cmd(t_token *token, t_shell **shell)
 	char *tmp;
 	struct stat buf;
 	char **cmd;
-	
+
 	cmd = build_cmd(token);
 	i = 0;
-	path = strenv("PATH=");
+	path = strenv("PATH", (*shell)->env);
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");
-		tmp = ft_strjoin(tmp, ft_strnstr(token->cmd, cmd[0], ft_strlen(cmd[0])));
+		tmp = ft_strjoin(tmp,
+			ft_strnstr(token->cmd, cmd[0], ft_strlen(cmd[0])));
 		if (stat(tmp, &buf) == 0)
 			execve(tmp, cmd, (*shell)->env);
 		i++;
 	}
+	write_errors(2, token->cmd);
 }

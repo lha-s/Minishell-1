@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/29 17:16:24 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/30 19:16:56 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		exec_builtin(t_token *token, t_shell **shell)
 	else if (ft_strcmp(token->cmd, "echo") == 0)
 		echo_process(token, (*shell)->env);
 	else if (ft_strcmp(token->cmd, "cd") == 0)
-		return;
+		cd_process(token, &(*shell)->env);
 	else if (ft_strcmp(token->cmd, "pwd") == 0)
 		pwd_process();
 	else if (ft_strcmp(token->cmd, "export") == 0)
@@ -76,8 +76,12 @@ int		is_builtin(t_token *token)
 
 void	execution(t_token *token, t_shell **shell)
 {
+	char *str;
+	str = ft_strdup(token->cmd);
+	get_variable_value(&token->cmd, (*shell)->env);
 	if (is_builtin(token) == FALSE)
 		exec_cmd(token, shell);
 	else
 		exec_builtin(token, shell);
+	safe_free(&token->cmd);
 }

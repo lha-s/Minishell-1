@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   write_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:00:24 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/27 20:49:52 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/30 18:31:12 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		write_exit()
 
 int		write_errors(int option, char *str)
 {
-	write(1, "Bash: ", 7);
+	write(1, "Minishell: ", 11);
 	if (option == 1)
 	{
 		write(1, str, ft_strlen(str));

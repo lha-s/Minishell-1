@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 11:34:59 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/29 17:03:52 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/30 19:21:12 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void	arg_finder(char *str, t_token **token)
 	int i;
 
 	i = 0;
-	printf("TEST2 = %s\n", str);
 	if (str !=	NULL)
 	{
 		if (str[i] == '"')  //gérer les erreurs de guilllemets ouverts ici

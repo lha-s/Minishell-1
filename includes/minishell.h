@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/29 21:52:47 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/30 18:04:21 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int			echo_process(t_token *token, char **env);
 int			export_process(t_token *token, char ***env);
 int			unset_process(t_token *token, char ***env);
 int			env_process(char **env);
+void		cd_process(t_token *token, char ***env);
 
 /*------------EXECUTION---------------*/
 int 		run_process(t_token *token, t_shell **shell);
