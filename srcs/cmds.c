@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/30 21:46:41 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/30 21:53:35 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@ int run_process(t_token *token, t_shell **shell)
 	int fdd;
 
 	fdd = dup(0);
-	if (ft_strcmp(token->cmd, "exit") == 0)
+	if (ft_strcmp(token->cmd, "exit") == 0 || token->cmd == NULL)
 		exit_prog(&token, TRUE);
 	if (token->next == NULL)
 		execution(token, shell, FALSE);
 	else
 	{
-		while ((token->next && strncmp(token->next->operator, "|", 2) == 0) || token->in)
+		while ((token->next && token->next->operator &&
+		ft_strncmp(token->next->operator, "|", 2) == 0) || token->in)
 		{
 			fdd = fork_process(token, shell, fdd);
 			if (token->out)
