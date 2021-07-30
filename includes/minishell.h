@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/30 18:04:21 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/30 20:30:24 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,9 @@ void		cd_process(t_token *token, char ***env);
 /*------------EXECUTION---------------*/
 int 		run_process(t_token *token, t_shell **shell);
 int			fork_process(t_token *token, t_shell **shell, int fdd);
-void		execution(t_token *token, t_shell **shell);
+void		execution(t_token *token, t_shell **shell, int pipe);
 void		exec_cmd(t_token *token, t_shell **shell);
+void		exec_cmd_fork(t_token *token, t_shell **shell);
 void		exit_prog(t_token **token, int exit_message);
 void		exit_status(t_token **token, pid_t pid);
 

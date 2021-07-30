@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/30 19:16:56 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/30 21:46:41 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int run_process(t_token *token, t_shell **shell)
 	if (ft_strcmp(token->cmd, "exit") == 0)
 		exit_prog(&token, TRUE);
 	if (token->next == NULL)
-		fdd = fork_process(token, shell, fdd);
+		execution(token, shell, FALSE);
 	else
 	{
 		while ((token->next && strncmp(token->next->operator, "|", 2) == 0) || token->in)
@@ -74,13 +74,13 @@ int		is_builtin(t_token *token)
 	return (FALSE);
 }
 
-void	execution(t_token *token, t_shell **shell)
+void	execution(t_token *token, t_shell **shell, int pipe)
 {
-	char *str;
-	str = ft_strdup(token->cmd);
 	get_variable_value(&token->cmd, (*shell)->env);
-	if (is_builtin(token) == FALSE)
+	if (is_builtin(token) == FALSE && pipe == TRUE)
 		exec_cmd(token, shell);
+	else if (is_builtin(token) == FALSE && pipe == FALSE)
+		exec_cmd_fork(token, shell);
 	else
 		exec_builtin(token, shell);
 	safe_free(&token->cmd);
