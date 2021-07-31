@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/30 20:30:24 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/07/31 22:45:24 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@
 # define TRUE 1
 # define FALSE 0
 
+# define BLUE '\001\e[1;34m\002'
+# define GREEN '\001\033[32;1m\002'
+
 # define BANNER			1
-# define MISSING_FILE	1
+# define BAD_CHAR		1
 # define WRONG_CMD		2
 # define BAD_QUOTES		3
 # define PATH_ERROR		4
@@ -83,6 +86,7 @@ int			variable_len(char *str);
 char		**value_name_tab(char **env);
 void		get_variable_value(char **str, char **env);
 int			check_name(char *name);
+int			token_checker(t_token *token);
 
 /*------------DISPLAY---------------*/
 int			display_txt(char *str);

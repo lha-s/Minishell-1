@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/30 18:21:58 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/31 21:55:06 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ int		parsing(char *line, t_token **token_list)
 	token_add_back(token_list, &new);
 	if (input_process(line, &new) == -1)
 		return (-1);
+	if (token_checker(*token_list) == 1)
+		return (write_errors(BAD_CHAR, NULL));
 	return(0);
 }
 
@@ -161,8 +163,9 @@ int		minishell(t_shell **shell)
 			free_struct(&token);
 		}
 	}
-	//exit_status(&token);
 	safe_free(&line);
+	//exit_status(&token);
+
 	return (0);
 }
 

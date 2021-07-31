@@ -6,28 +6,28 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:19:07 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/29 22:00:18 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/01 00:17:10 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*prompt(void)
+char *prompt(void)
 {
-	char	*tmp;
-	char	*line;
-	size_t	len;
+	char *tmp;
+	char *line;
+	size_t len;
 
-	line = ft_strjoin("\e[1;34m(", getenv("USER"));
-	line = ft_strjoin(line, ")\033[0m:");
+	line = ft_strjoin("[", getenv("USER"));
+	line = ft_strjoin(line, "]");
 	tmp = getcwd(NULL, 0);
 	len = ft_strlen(tmp);
 	while (tmp[len] != '/')
 		len--;
 	tmp = &tmp[len + 1];
-	line = ft_strjoin(line, "\033[32;1m ");
+	line = ft_strjoin(line, " • ");
 	line = ft_strjoin(line, tmp);
-	line = ft_strjoin(line, "$\e[0m ");
+	line = ft_strjoin(line, "$ ");
 	return (line);
 }
 

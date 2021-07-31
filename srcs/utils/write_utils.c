@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:00:24 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/30 18:31:12 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/31 19:40:24 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ int		write_errors(int option, char *str)
 	write(1, "Minishell: ", 11);
 	if (option == 1)
 	{
-		write(1, str, ft_strlen(str));
-		write(1, " not found\n", 11);
+		write(1, "Use of unsopported character\n", 29);
 	}
 	else if (option == 2)
 	{

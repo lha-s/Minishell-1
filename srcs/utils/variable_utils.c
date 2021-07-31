@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 19:34:27 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/26 11:10:43 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/01 00:02:53 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int		count_to_copy(char *str)
 
 	i = 0;
 	count = 0;
-	while (str[i]) // je peux raccourcir ici
+	while (str[i])
 	{
 		if (str[i] == '$')
 			i += variable_len(&str[i]);
@@ -126,7 +126,7 @@ int		count_word(char *str, char *to_replace)
 
 	i = 0;
 	count = 0;
-	while (str[i]) // je peux raccourcir ici
+	while (str[i])
 	{
 		if (str[i] == '$')
 		{
