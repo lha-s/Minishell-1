@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 20:36:39 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/30 19:18:34 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/07/30 21:45:41 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,25 +50,102 @@ char**	build_cmd(t_token *token)
 	return (cmd);
 }
 
-void	exec_cmd(t_token *token, t_shell **shell)
+int			ft_check_sep(char s, char c)
+{
+	if (c == s)
+		return (1);
+	else
+		return (0);
+}
+
+unsigned int	number_of_words(char const *s, char c)
+{
+	int i;
+	int words_nb;
+	int in_word;
+
+	in_word = 0;
+	words_nb = 0;
+	i = 0;
+	while (s[i])
+	{
+		if (ft_check_sep(s[i], c) == 0)
+		{
+			if (in_word == 0)
+			{
+				words_nb++;
+				in_word = 1;
+			}
+		}
+		else
+			in_word = 0;
+		i++;
+	}
+	return (words_nb);
+}
+
+char	**bin(t_token *token, t_shell **shell, char ***cmd)
 {
 	int i;
 	char **path;
-	char *tmp;
-	struct stat buf;
-	char **cmd;
+	char **tab;
 
-	cmd = build_cmd(token);
 	i = 0;
+	tab = malloc(sizeof(char *) * (number_of_words((*cmd)[0], ' ') + 2)); //protéger le malloc ?
 	path = strenv("PATH", (*shell)->env);
 	while (path[i])
 	{
-		tmp = ft_strjoin(path[i], "/");
-		tmp = ft_strjoin(tmp,
-			ft_strnstr(token->cmd, cmd[0], ft_strlen(cmd[0])));
-		if (stat(tmp, &buf) == 0)
-			execve(tmp, cmd, (*shell)->env);
+		tab[i] = ft_strjoin(path[i], "/");
+		tab[i] = ft_strjoin(tab[i], ft_strnstr(token->cmd, (*cmd)[0], ft_strlen((*cmd)[0])));
+		i++;
+	}
+	return (tab);
+}
+
+void	exec_cmd(t_token *token, t_shell **shell)
+{
+	int i;
+	char **tab;
+	char **cmd;
+	struct stat buf;
+
+	i = 0;
+	cmd = build_cmd(token);
+	tab = bin(token, shell, &cmd);
+	while (tab[i])
+	{
+		if (stat(tab[i], &buf) == 0)
+			execve(tab[i], cmd, (*shell)->env);
 		i++;
 	}
 	write_errors(2, token->cmd);
+	exit_prog(&token, FALSE);
+}
+
+void	exec_cmd_fork(t_token *token, t_shell **shell)
+{
+	int i;
+	char **tab;
+	char **cmd;
+	struct stat buf;
+	pid_t pid;
+
+	i = 0;
+	cmd = build_cmd(token);
+	tab = bin(token, shell, &cmd);
+	pid = fork();
+	if (pid < 0)
+		ft_putstr_fd("fail\n", 2);
+	else if (!pid)
+	{
+		while (tab[i])
+		{
+			if (stat(tab[i], &buf) == 0)
+				execve(tab[i], cmd, (*shell)->env);
+			i++;
+		}
+		write_errors(2, token->cmd);
+		exit_prog(&token, FALSE);	
+	}
+	wait(&pid);
 }
