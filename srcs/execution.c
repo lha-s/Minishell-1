@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 20:36:39 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/30 21:45:41 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/02 12:54:24 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,53 +50,27 @@ char**	build_cmd(t_token *token)
 	return (cmd);
 }
 
-int			ft_check_sep(char s, char c)
-{
-	if (c == s)
-		return (1);
-	else
-		return (0);
-}
-
-unsigned int	number_of_words(char const *s, char c)
+char	**bin(t_shell **shell, char *cmd)
 {
 	int i;
-	int words_nb;
-	int in_word;
-
-	in_word = 0;
-	words_nb = 0;
-	i = 0;
-	while (s[i])
-	{
-		if (ft_check_sep(s[i], c) == 0)
-		{
-			if (in_word == 0)
-			{
-				words_nb++;
-				in_word = 1;
-			}
-		}
-		else
-			in_word = 0;
-		i++;
-	}
-	return (words_nb);
-}
-
-char	**bin(t_token *token, t_shell **shell, char ***cmd)
-{
-	int i;
+	int sum;
 	char **path;
 	char **tab;
 
 	i = 0;
-	tab = malloc(sizeof(char *) * (number_of_words((*cmd)[0], ' ') + 2)); //protéger le malloc ?
+	sum = 0;
 	path = strenv("PATH", (*shell)->env);
 	while (path[i])
 	{
+		sum += ft_strlen(path[i]);
+		i++;
+	}
+	i = 0;
+	tab = malloc(sizeof(char *) * (sum + ((2 + ft_strlen(cmd)) * i))); //protéger le malloc ?
+	while (path[i])
+	{
 		tab[i] = ft_strjoin(path[i], "/");
-		tab[i] = ft_strjoin(tab[i], ft_strnstr(token->cmd, (*cmd)[0], ft_strlen((*cmd)[0])));
+		tab[i] = ft_strjoin(tab[i], cmd);
 		i++;
 	}
 	return (tab);
@@ -111,7 +85,7 @@ void	exec_cmd(t_token *token, t_shell **shell)
 
 	i = 0;
 	cmd = build_cmd(token);
-	tab = bin(token, shell, &cmd);
+	tab = bin(shell, cmd[0]);
 	while (tab[i])
 	{
 		if (stat(tab[i], &buf) == 0)
@@ -132,7 +106,7 @@ void	exec_cmd_fork(t_token *token, t_shell **shell)
 
 	i = 0;
 	cmd = build_cmd(token);
-	tab = bin(token, shell, &cmd);
+	tab = bin(shell, cmd[0]);
 	pid = fork();
 	if (pid < 0)
 		ft_putstr_fd("fail\n", 2);
