@@ -6,49 +6,38 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 11:55:03 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/29 16:16:16 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/02 16:58:17 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-int		coma_into_dot(char **str)
+int		simple_quote(char *str, int i)
 {
-	int i;
-
-	i = 0;
-	while ((*str)[i])
+	i++;
+	while (str[i] && str[i] != '\'')
 	{
-		if ((*str)[i] == '"') // il faut regler le soucis des guillemets pour les arguments
-		{
+		if (str[i] == '\\' && str[i + 1] == '\'')
 			i++;
-			while ((*str)[i] && (*str)[i] != '"')
-			{
-				if ((*str)[i] == '\\' && (*str)[i + 1] == '"')
-					i++;
-				i++;
-			}
-			if ((*str)[i] == '\0')
-				return (write_errors(3, *str));
-		}
-		else if ((*str)[i] == '\'')
-		{
-			i++;
-			while ((*str)[i] && (*str)[i] != '\'')
-			{
-				if ((*str)[i] == '\\' && (*str)[i + 1] == '\'')
-					i++;
-				i++;
-			}
-			if ((*str)[i] == '\0')
-				return (write_errors(3, *str));
-		}
-		else if ((*str)[i] == ';')
-			(*str)[i] = 13;
 		i++;
 	}
-	return (0);
+	if (str[i] == '\0')
+		return (-1);
+	return (i);
+}
+
+int		double_quote(char *str, int i)
+{
+	i++;
+	while (str[i] && str[i] != '"')
+	{
+		if (str[i] == '\\' && str[i + 1] == '"')
+			i++;
+		i++;
+	}
+	if (str[i] == '\0')
+		return (-1);
+	return (i);
 }
 
 int		space_into_dot(char **str)
@@ -58,30 +47,20 @@ int		space_into_dot(char **str)
 	i = 0;
 	while ((*str)[i])
 	{
-		if ((*str)[i] == '"') // il faut regler le soucis des guillemets pour les arguments
+		if ((*str)[i] == '"')
 		{
-			i++;
-			while ((*str)[i] && (*str)[i] != '"')
-			{
-				if ((*str)[i] == '\\' && (*str)[i + 1] == '"')
-					i++;
-				i++;
-			}
-			if ((*str)[i] == '\0')
+			i = double_quote(&((*str)[i]), i);
+			if (i == -1)
 				return (write_errors(3, *str));
 		}
 		else if ((*str)[i] == '\'')
 		{
-			i++;
-			while ((*str)[i] && (*str)[i] != '\'')
-			{
-				if ((*str)[i] == '\\' && (*str)[i + 1] == '\'')
-					i++;
-				i++;
-			}
-			if ((*str)[i] == '\0')
+			i = simple_quote(&((*str)[i]), i);
+			if (i == -1)
 				return (write_errors(3, *str));
 		}
+		else if ((*str)[i] == ';' || (*str)[i] == '\\')
+			return (write_errors(BAD_CHAR, NULL));
 		else if ((*str)[i] == ' ')
 			(*str)[i] = 13;
 		i++;

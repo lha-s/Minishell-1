@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:19:07 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/01 00:17:10 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/02 17:00:27 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ char *prompt(void)
 	while (tmp[len] != '/')
 		len--;
 	tmp = &tmp[len + 1];
-	line = ft_strjoin(line, " • ");
+	line = ft_strjoin(line, " ");
 	line = ft_strjoin(line, tmp);
-	line = ft_strjoin(line, "$ ");
+	line = ft_strjoin(line, " • ");
 	return (line);
 }
 

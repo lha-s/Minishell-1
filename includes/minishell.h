@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/31 22:45:24 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/02 16:58:55 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int			variable_len(char *str);
 char		**value_name_tab(char **env);
 void		get_variable_value(char **str, char **env);
 int			check_name(char *name);
-int			token_checker(t_token *token);
 
 /*------------DISPLAY---------------*/
 int			display_txt(char *str);
