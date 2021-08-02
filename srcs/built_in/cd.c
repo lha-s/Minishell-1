@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 15:28:32 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/30 18:20:46 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/02 17:47:30 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,15 @@ void	cd_process(t_token *token, char ***env)
 
 	i = 0;
 	if (*token->arg)
-		if (chdir(token->arg[0]) != 0)
+	{
+		if (ft_strcmp(*token->arg, "~") == 0)
+		{
+			if (chdir(ft_strjoin("/Users/", my_getenv("USER", *env))) != 0)
+				write_cd_errors(token);
+		}
+		else if (chdir(token->arg[0]) != 0)
 			write_cd_errors(token);
+	}
 	while ((*env)[i] != NULL)
 	{
 		if (ft_strncmp((*env)[i], "PWD=", 4) == 0)

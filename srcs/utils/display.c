@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:19:07 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/02 17:00:27 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/02 17:46:57 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,15 @@ char *prompt(void)
 	line = ft_strjoin("[", getenv("USER"));
 	line = ft_strjoin(line, "]");
 	tmp = getcwd(NULL, 0);
-	len = ft_strlen(tmp);
-	while (tmp[len] != '/')
-		len--;
-	tmp = &tmp[len + 1];
+	if (ft_strcmp(tmp, ft_strjoin("/Users/", getenv("USER"))) == 0) // il faut faire gaffe à utiliser notre env et pas celui du zsh
+		tmp = "~";
+	else
+	{
+		len = ft_strlen(tmp);
+		while (tmp[len] != '/')
+			len--;
+		tmp = &tmp[len + 1];
+	}
 	line = ft_strjoin(line, " ");
 	line = ft_strjoin(line, tmp);
 	line = ft_strjoin(line, " • ");

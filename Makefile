@@ -31,7 +31,8 @@ SRCS		= ./srcs/utils/common_utils.c \
 				./srcs/built_in/export.c \
 				./srcs/built_in/unset.c \
 				./srcs/built_in/cd.c \
-				./srcs/built_in/echo.c
+				./srcs/built_in/echo.c \
+				./srcs/built_in/version.c
 
 
 OBJ			=	$(SRCS:.c=.o)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/30 21:53:35 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/02 21:16:37 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void		exec_builtin(t_token *token, t_shell **shell)
 		unset_process(token, &(*shell)->env);
 	else if (ft_strcmp(token->cmd, "env") == 0)
 		env_process((*shell)->env);
+		else if (ft_strcmp(token->cmd, "minishell") == 0)
+		version_process(token);
 	return;
 }
 
@@ -71,6 +73,8 @@ int		is_builtin(t_token *token)
 	else if (ft_strcmp(token->cmd, "unset") == 0)
 		return (TRUE);
 	else if (ft_strcmp(token->cmd, "env") == 0)
+		return (TRUE);
+	else if (ft_strcmp(token->cmd, "minishell") == 0)
 		return (TRUE);
 	return (FALSE);
 }

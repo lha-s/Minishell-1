@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 09:06:00 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/27 20:50:05 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/02 17:57:49 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,6 @@ void	exit_prog(t_token **token, int exit_message)
 	if (token)
 		free_struct(token);
 	if (exit_message == TRUE)
-		ft_putstr_fd("Bash: exit\n", STDERR_FILENO);
+		ft_putstr_fd("Minishell: exit\n", STDERR_FILENO);
 	exit(wret);
 }

@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 08:00:40 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/26 11:15:23 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/02 21:24:25 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int		display_txt(char *str)
 	ret = 1;
 
 	fd = open(str, O_RDONLY);
-	printf("%d\n", fd);
 	if (fd > 0)
 	{
 		while(ret > 0)

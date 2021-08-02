@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   version.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 14:34:01 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/02 17:52:36 by allanganoun      ###   ########.fr       */
+/*   Created: 2021/08/02 20:55:08 by allanganoun       #+#    #+#             */
+/*   Updated: 2021/08/02 21:22:22 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/minishell.h"
 
-#include "libft.h"
-
-size_t	ft_strlen(const char *s)
+void	version_process(t_token *token)
 {
-	size_t i;
+	int i;
 
 	i = 0;
-	while (s && s[i])
+	while (token->option && token->option[i] != NULL)
+	{
+		if (ft_strcmp(token->option[i], "-version") == 0)
+			display_txt("version.txt");
 		i++;
-	return (i);
+	}
 }
