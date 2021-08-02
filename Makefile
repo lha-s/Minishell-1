@@ -14,25 +14,26 @@ LIBFT_PATH	=	./srcs/utils/libft
 
 LIBFT		=	$(LIBFT_PATH)/libft.a
 
-SRCS		= ./srcs/utils/common_utils.c \
-				./srcs/utils/common_utils2.c \
-				./srcs/utils/free_utils.c \
-				./srcs/utils/display.c \
-				./srcs/utils/struct_utils.c \
-				./srcs/utils/write_utils.c \
-				./srcs/utils/variable_utils.c \
-				./srcs/input_process.c \
+SRCS		= ./srcs/Utils/common_utils.c \
+				./srcs/Utils/common_utils2.c \
+				./srcs/Utils/free_utils.c \
+				./srcs/Utils/display.c \
+				./srcs/Utils/struct_utils.c \
+				./srcs/Utils/write_utils.c \
+				./srcs/Utils/variable_utils.c \
+				./srcs/Parsing/input_process.c \
 				./srcs/minishell.c \
 				./srcs/cmds.c \
 				./srcs/execution.c \
 				./srcs/piping.c \
-				./srcs/built_in/pwd.c \
-				./srcs/built_in/env.c \
-				./srcs/built_in/export.c \
-				./srcs/built_in/unset.c \
-				./srcs/built_in/cd.c \
-				./srcs/built_in/echo.c \
-				./srcs/built_in/version.c
+				./srcs/Built_in/pwd.c \
+				./srcs/Built_in/env.c \
+				./srcs/Built_in/export.c \
+				./srcs/Built_in/unset.c \
+				./srcs/Built_in/cd.c \
+				./srcs/Built_in/echo.c \
+				./srcs/Built_in/version.c \
+				./srcs/Parsing/parsing.c
 
 
 OBJ			=	$(SRCS:.c=.o)

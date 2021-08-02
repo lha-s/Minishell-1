@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/02 21:17:05 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/02 21:34:44 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # include <string.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include "../srcs/utils/libft/libft.h"
+# include "../srcs/Utils/libft/libft.h"
 
 # define ID_ECHO 0
 # define ID_CD 1
@@ -101,6 +101,9 @@ t_token		*token_new();
 void		option_finder(char *str, t_token **token);
 int			operator_finder(char *str, t_token **token);
 void		arg_finder(char *str, t_token **token);
+int			parsing(char *line, t_token **token_list);
+int			input_process(char *line, t_token **token);
+int			input_process2(char **pre_token, t_token **token);
 
 /*------------BUILT-INS---------------*/
 int			pwd_process();
