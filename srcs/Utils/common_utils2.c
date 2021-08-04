@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 11:55:03 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/08/02 16:58:17 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/04 03:58:02 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int		space_into_dot(char **str)
 	{
 		if ((*str)[i] == '"')
 		{
-			i = double_quote(&((*str)[i]), i);
+			i = double_quote(*str, i);
 			if (i == -1)
 				return (write_errors(3, *str));
 		}
 		else if ((*str)[i] == '\'')
 		{
-			i = simple_quote(&((*str)[i]), i);
+			i = simple_quote(*str, i) ;
 			if (i == -1)
 				return (write_errors(3, *str));
 		}

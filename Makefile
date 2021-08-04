@@ -26,13 +26,13 @@ SRCS		= ./srcs/Utils/common_utils.c \
 				./srcs/cmds.c \
 				./srcs/execution.c \
 				./srcs/piping.c \
-				./srcs/Built_in/pwd.c \
-				./srcs/Built_in/env.c \
-				./srcs/Built_in/export.c \
-				./srcs/Built_in/unset.c \
-				./srcs/Built_in/cd.c \
-				./srcs/Built_in/echo.c \
-				./srcs/Built_in/version.c \
+				./srcs/Built_ins/pwd.c \
+				./srcs/Built_ins/env.c \
+				./srcs/Built_ins/export.c \
+				./srcs/Built_ins/unset.c \
+				./srcs/Built_ins/cd.c \
+				./srcs/Built_ins/echo.c \
+				./srcs/Built_ins/version.c \
 				./srcs/Parsing/parsing.c
 
 
