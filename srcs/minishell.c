@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/02 21:33:11 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 09:40:04 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ void	printf_all(t_token *token) // Il faut supprimer cette fonction avant le ren
 	{
 		printf("CMD : %s\n", token->cmd);
 		printf("OPERATOR : %s\n", token->operator);
+		if (token->redir != NULL)
+			for (int i = 0 ; token->redir[i] != NULL ; i++)
+				printf("REDIR = %s\n", token->redir[i]);
+		else
+			printf("REDIR = NULL\n");
 		if (token->option != NULL)
 			for (int i = 0 ; token->option[i] != NULL ; i++)
 				printf("OPTION = %s\n", token->option[i]);
@@ -48,8 +53,8 @@ void	init_shell(char **old_env, t_shell **shell)
 
 	i = 0;
 	lenght = tablen(old_env);
-	(*shell) = malloc(sizeof(t_shell));
-	(*shell)->env = malloc((lenght + 1) * sizeof(char *));
+	(*shell) = ft_malloc(sizeof(t_shell));
+	(*shell)->env = ft_malloc((lenght + 1) * sizeof(char *));
 	while (old_env[i] != NULL)
 	{
 		(*shell)->env[i] = ft_strdup(old_env[i]);

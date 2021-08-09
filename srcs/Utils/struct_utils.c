@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 08:53:22 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/11 19:34:46 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 09:51:34 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,18 @@
 
 int		init_struct(t_token **token)
 {
-	*token = (t_token *)malloc(1 * sizeof(t_token));
+	*token = (t_token *)ft_malloc(1 * sizeof(t_token));
 	if (!(*token))
 		return (-1);
 	**token = (t_token){
 		.cmd = NULL,
+		.redir = NULL,
 		.option = NULL,
 		.arg = NULL,
 		.operator = NULL,
 		.next = NULL,
+		.type = 0,
+		.std = 0,
 		.in = 0,
 		.out = 0,
 		.pid_index = 0,
@@ -75,7 +78,7 @@ void	token_cleaning(t_token **token)
 	i = 0;
 	while ((*token)->arg && (*token)->arg[i] != NULL)
 		quote_remover(&((*token)->arg[i++]));
-	if ((*token)->operator)
-		quote_remover(&((*token)->operator));
+	while ((*token)->redir && (*token)->redir[i] != NULL)
+		quote_remover(&((*token)->redir[i++]));
 	*token = (*token)->next;
 }

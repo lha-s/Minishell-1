@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/08/02 21:16:37 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/08 21:21:44 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void		exec_builtin(t_token *token, t_shell **shell)
 		unset_process(token, &(*shell)->env);
 	else if (ft_strcmp(token->cmd, "env") == 0)
 		env_process((*shell)->env);
-		else if (ft_strcmp(token->cmd, "minishell") == 0)
+	else if (ft_strcmp(token->cmd, "minishell") == 0)
 		version_process(token);
 	return;
 }

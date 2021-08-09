@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:00:24 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/02 16:58:17 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 04:27:51 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int		write_errors(int option, char *str)
 		write(1, "Quotes open, close them\n", 24);
 	else if (option == 4)
 		write(1, "PATH error\n", 11);
+	else if (option == 5)
+		write_output("redirection error detected");
 	return (-1);
 }
 

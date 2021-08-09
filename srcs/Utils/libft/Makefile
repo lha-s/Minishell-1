@@ -6,7 +6,7 @@
 #    By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/18 12:51:25 by alganoun          #+#    #+#              #
-#    Updated: 2021/07/29 21:56:22 by allanganoun      ###   ########.fr        #
+#    Updated: 2021/08/09 09:34:41 by allanganoun      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS	= ./ft_atoi.c ./ft_bzero.c \
 			./ft_substr.c ./ft_tolower.c \
 			./ft_toupper.c \
 			./ft_rm_whitespace.c \
+			./ft_malloc.c \
 			./get_next_line.c
 
 

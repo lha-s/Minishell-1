@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/02 21:30:25 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/08/02 21:31:37 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 05:13:18 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ int		input_process2(char **pre_token, t_token **token)
 
 	i = 1;
 	(*token)->cmd = pre_token[0];
-	quote_remover(&((*token)->cmd));
 	while (pre_token && pre_token[i] != NULL)
 	{
-		quote_remover(&(pre_token[i]));
-		if (operator_finder(pre_token[i], token) == 1)
+		if (pipe_finder(pre_token[i], token) == 1)
 		{
 			i++;
 			init_struct(&new);
@@ -34,8 +32,13 @@ int		input_process2(char **pre_token, t_token **token)
 		}
 		else
 		{
-			option_finder(pre_token[i], token);
-			arg_finder(pre_token[i], token);
+			if (redir_finder(&pre_token[i], token) > 0)
+				i++;
+			else
+			{
+				option_finder(pre_token[i], token);
+				arg_finder(pre_token[i], token);
+			}
 		}
 		i++;
 	}
@@ -55,6 +58,7 @@ int		input_process(char *line, t_token **token)
 		return (-1);
 	pre_token = ft_split(line, 13);
 	input_process2(pre_token, token);
+	token_cleaning(token);
 	return (0);
 }
 

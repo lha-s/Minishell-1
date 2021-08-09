@@ -6,13 +6,13 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 11:34:59 by alganoun          #+#    #+#             */
-/*   Updated: 2021/07/30 19:21:12 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 09:54:42 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		operator_finder(char *str, t_token **token)
+int		pipe_finder(char *str, t_token **token)
 {
 	int i;
 	t_token *new;
@@ -20,17 +20,46 @@ int		operator_finder(char *str, t_token **token)
 	i = 0;
 	if (str !=	NULL)
 	{
-		if ((str[i] == '|' && str[i + 1] == '\0')
-			|| (str[i] == '&' && str[i + 1] == '\0')
-			|| (str[i] == '>' && str[i + 1] == '\0')
-			|| (str[i] == '<' && str[i + 1] == '\0')
-			|| (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '\0')
-			|| (str[i] == '<' && str[i + 1] == '<' && str[i + 2] == '\0'))
+		if (str[i] == '|' && str[i + 1] == '\0')
 		{
 			init_struct(&new);
 			new->operator = ft_strdup(str);
 			new->next = (*token)->next;
 			(*token)->next = new;
+			return (1);
+		}
+	}
+	return (0);
+}
+
+int		redir_finder(char **tab, t_token **token) // à reduire
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	if (tab[i] != NULL)
+	{
+		if ((tab[i][j] == '>' && tab[i][j + 1] == '\0')
+			|| (tab[i][j] == '<' && tab[i][j + 1] == '\0')
+			|| (tab[i][j] == '>' && tab[i][j + 1] == '>' && tab[i][j + 2] == '\0')
+			|| (tab[i][j] == '<' && tab[i][j + 1] == '<' && tab[i][j + 2] == '\0'))
+		{
+			if (tab[i + 1] == NULL)
+				return (write_errors(REDIR_ERROR, NULL));
+			if ((*token)->redir == NULL)
+			{
+				(*token)->redir = ft_malloc(sizeof(char *) * 3);
+				(*token)->redir[0] = ft_strdup(tab[0]);
+				(*token)->redir[1] = ft_strdup(tab[1]);
+				(*token)->redir[2] = NULL;
+			}
+			else
+			{
+				reallocate_tab(&((*token)->redir), tab[0]);
+				reallocate_tab(&((*token)->redir), tab[1]);
+			}
 			return (1);
 		}
 	}
@@ -53,7 +82,7 @@ void	 option_finder(char *str, t_token **token)
 		{
 			if ((*token)->option == NULL)
 			{
-				(*token)->option = (char **)malloc(sizeof(char *) * 2);
+				(*token)->option = (char **)ft_malloc(sizeof(char *) * 2);
 				(*token)->option[0] = ft_strdup(str);
 				(*token)->option[1] = NULL;
 			}
@@ -95,7 +124,7 @@ void	arg_finder(char *str, t_token **token)
 		{
 			if ((*token)->arg == NULL)
 			{
-				(*token)->arg= (char **)malloc(sizeof(char *) * 2);
+				(*token)->arg= (char **)ft_malloc(sizeof(char *) * 2);
 				(*token)->arg[0] = str;
 				(*token)->arg[1] = NULL;
 			}

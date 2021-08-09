@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 21:54:55 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/29 21:58:54 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 09:44:32 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ int		get_next_line(int fd, char **line)
 
 	l = 1;
 	r = 0;
-	if(!(*line = malloc(1)))
+	if(!(*line = ft_malloc(1)))
 		return (-1);
 	(*line)[0] = 0;
 	while ((r = read(fd, &c, 1)) && l++ && c != '\n')
 	{
-		if(!(tmp = malloc(l)))
+		if(!(tmp = ft_malloc(l)))
 		{
 			free(*line);
 			return (0);

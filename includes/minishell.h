@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/02 21:41:30 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 06:21:14 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 # define WRONG_CMD		2
 # define BAD_QUOTES		3
 # define PATH_ERROR		4
-# define BUFFER_SIZE 	1024
+# define REDIR_ERROR	5
+# define BUFFER_SIZE	1024
 # define EXIT_MSG	"\n[Process completed]"
 
 # include <unistd.h>
@@ -57,11 +58,14 @@ typedef struct		s_shell
 typedef struct		s_token
 {
 	char			*cmd;
+	char			**redir;
 	char			**option;
 	char			**arg;
 	char			*operator;
 	struct s_token	*next;
 	int 			fd[2];
+	char			type;
+	char			std;
 	char 			in;
 	char 			out;
 	pid_t 			pids[700];
@@ -86,6 +90,14 @@ int			variable_len(char *str);
 char		**value_name_tab(char **env);
 void		get_variable_value(char **str, char **env);
 int			check_name(char *name);
+void		token_cleaning(t_token **token);
+int			simple_quote(char *str, int i);
+int			double_quote(char *str, int i);
+int			add_missing_space(char **str);
+void		dquote_missing_space(char **str, char **tmp, int *i, int *j);
+void		squote_missing_space(char **str, char **tmp, int *i, int *j);
+void		dchev_missing_space(char **str, char **tmp, int *i, int *j);
+void		pipechev_missing_space(char **str, char **tmp, int *i, int *j);
 
 /*------------DISPLAY---------------*/
 int			display_txt(char *str);
@@ -99,7 +111,8 @@ t_token		*token_last(t_token *token);
 void		token_add_back(t_token **atoken, t_token **new);
 t_token		*token_new();
 void		option_finder(char *str, t_token **token);
-int			operator_finder(char *str, t_token **token);
+int			pipe_finder(char *str, t_token **token);
+int			redir_finder(char **tab, t_token **token);
 void		arg_finder(char *str, t_token **token);
 int			parsing(char *line, t_token **token_list);
 int			input_process(char *line, t_token **token);

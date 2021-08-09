@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 11:55:03 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/08/04 03:58:02 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 09:54:43 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,16 @@ int		space_into_dot(char **str)
 	int i;
 
 	i = 0;
+	if (add_missing_space(str) == -1)
+		return (-1);
+	if (*str == NULL)
+		return (write_errors(REDIR_ERROR, NULL));
 	while ((*str)[i])
 	{
 		if ((*str)[i] == '"')
-		{
 			i = double_quote(*str, i);
-			if (i == -1)
-				return (write_errors(3, *str));
-		}
 		else if ((*str)[i] == '\'')
-		{
 			i = simple_quote(*str, i) ;
-			if (i == -1)
-				return (write_errors(3, *str));
-		}
 		else if ((*str)[i] == ';' || (*str)[i] == '\\')
 			return (write_errors(BAD_CHAR, NULL));
 		else if ((*str)[i] == ' ')
@@ -74,7 +70,7 @@ void	quote_remover2(char **str, int len)
 	int i;
 	int j;
 
-	tmp = malloc(len + 1);
+	tmp = ft_malloc(len + 1);
 	i = 0;
 	j = 0;
 	while ((*str)[i] && (*str)[0] == '"')

@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:42:10 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/07/26 17:35:47 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 09:54:41 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		unset_process(t_token *token, char ***env)
 	{
 		index = 0;
 		j = count_to_keep(token->arg[i], *env);
-		tab = (char **)malloc(sizeof(char *) * (j + 1));
+		tab = (char **)ft_malloc(sizeof(char *) * (j + 1));
 		j = 0;
 		while ((*env)[index])
 		{

@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 08:00:40 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/02 21:24:25 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 09:45:30 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		reallocate_tab(char ***tab, char *str)
 {
 	char **tmp;
 	int i;
-	tmp = (char **)malloc(sizeof(char *) * (tablen(*tab) + 2));
+	tmp = (char **)ft_malloc(sizeof(char *) * (tablen(*tab) + 2));
 	if (!tmp)
 		return (-1);
 	i = 0;

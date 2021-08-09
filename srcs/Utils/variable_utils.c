@@ -6,7 +6,7 @@
 /*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 19:34:27 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/08/01 00:02:53 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/09 09:51:16 by allanganoun      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	add_dollar(char ***tab)
 	while ((*tab)[i] != NULL)
 	{
 		j = 1;
-		str = malloc(ft_strlen((*tab)[i]) + 2);
+		str = ft_malloc(ft_strlen((*tab)[i]) + 2);
 		str[0] = '$';
 		while ((*tab)[i][j - 1])
 		{
@@ -59,7 +59,7 @@ char	**value_name_tab(char **env)
 	char **tab;
 
 	i = 0;
-	tab = malloc(sizeof(char *) * (tablen(env) + 1));
+	tab = ft_malloc(sizeof(char *) * (tablen(env) + 1));
 	while (env[i] != NULL)
 	{
 		tab[i] = ft_strdup(env[i]);
@@ -151,7 +151,7 @@ int		replace_word(char **str, char *name, char *value, char **tab)
 	i = 0;
 	j = count_to_copy(*str);
 	count = count_word(*str, name);
-	result = malloc(j + count * ft_strlen(value));
+	result = ft_malloc(j + count * ft_strlen(value));
 	j = 0;
 	count = 0;
 	while ((*str)[i] != '\0')
