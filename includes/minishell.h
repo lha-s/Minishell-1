@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/11 00:11:09 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/11 00:44:52 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,6 @@ void		exit_prog(t_token **token, char *exit_message, int status);
 void		sig_int(int code);
 void		sig_quit(int code);
 void		sig_init(void);
-void		sigint_handler(int sign_num);
+void		sigint(int sig);
 
 #endif
