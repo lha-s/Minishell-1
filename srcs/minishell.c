@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/09 09:40:04 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/11 00:10:44 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ int		minishell(t_shell **shell)
 		}
 	}
 	safe_free(&line);
-	//exit_status(&token);
-
 	return (0);
 }
 
@@ -116,10 +114,11 @@ int		main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	t_shell	*shell;
+	signal(SIGQUIT, sigint_handler);
+	signal(SIGINT, sigint_handler);
 	init_shell(env, &shell);
 	if (display_txt("banner.txt") == -1)
 		return (-1);
-	if (minishell(&shell) == -1)
-		return (-1); // imprimer un message d'erreur ici
+	minishell(&shell);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/09 06:21:14 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/11 00:11:09 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <string.h>
+# include <signal.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include "../srcs/Utils/libft/libft.h"
@@ -48,7 +49,15 @@
 # define ID_ENV 5
 # define ID_BIN 6
 
-int wret;
+typedef struct	s_sig
+{
+	int				sigint;
+	int				sigquit;
+	int				exit_status;
+	pid_t			pid;
+}				t_sig;
+
+t_sig	g_sig;
 
 typedef struct		s_shell
 {
@@ -68,6 +77,7 @@ typedef struct		s_token
 	char			std;
 	char 			in;
 	char 			out;
+	int				ret;
 	pid_t 			pids[700];
 	int 			pid_index;
 }					t_token;
@@ -105,6 +115,7 @@ ssize_t		write_output(char *str);
 int			write_exit();
 int			write_errors(int option, char *str);
 int			write_exec_errors();
+char 		*prompt(void);
 
 /*------------PARSING---------------*/
 t_token		*token_last(t_token *token);
@@ -133,7 +144,13 @@ int			fork_process(t_token *token, t_shell **shell, int fdd);
 void		execution(t_token *token, t_shell **shell, int pipe);
 void		exec_cmd(t_token *token, t_shell **shell);
 void		exec_cmd_fork(t_token *token, t_shell **shell);
-void		exit_prog(t_token **token, int exit_message);
-void		exit_status(t_token **token, pid_t pid);
+
+/*------------SIGNAL&EXIT---------------*/
+void		exit_cmd(t_token *token);
+void		exit_prog(t_token **token, char *exit_message, int status);
+void		sig_int(int code);
+void		sig_quit(int code);
+void		sig_init(void);
+void		sigint_handler(int sign_num);
 
 #endif

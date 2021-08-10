@@ -6,33 +6,11 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 20:36:47 by musoufi           #+#    #+#             */
-/*   Updated: 2021/07/30 20:41:01 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/10 20:46:50 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	exit_status(t_token **token, pid_t pid)
-{
-	int i;
-	int wstatus;
-
-	i = 0;
-	while (*token && i < (*token)->pid_index)
-	{
-		waitpid((*token)->pids[i], &wstatus, 0);
-		if (WIFEXITED(wstatus))
-			wret = WEXITSTATUS(wstatus);
-		if (WIFSIGNALED(pid))
-		{
-			wret = WTERMSIG(pid);
-			if (wret != 131)
-				wret += 128;
-		}
-		(*token)->pids[i] = 0;
-		i++;
-	}
-}
 
 void		pip(int *a, int *b, int *c, int close_all)
 {
@@ -67,22 +45,21 @@ void	child(t_token *token, t_shell **shell, int fd[2], int *fdd)
 int			fork_process(t_token *token, t_shell **shell, int fdd)
 {
 	int 	fd[2];
-	pid_t 	pid;
 	
 	fd[0] = -1;
 	fd[1] = -1;
 	if (pipe(fd))
 		return (-1);
-	pid = fork();
-	if (pid < 0)
+	g_sig.pid = fork();
+	if (g_sig.pid < 0)
 	{
 		pip(&fd[0], &fd[1], &fdd, TRUE);
 		return (-1);
 	}
-	else if (!pid)
+	else if (!g_sig.pid)
 		child(token, shell, fd, &fdd);
 	//exit_status(&token);
-	wait(&pid);
+	wait(&g_sig.pid);
 	pip(&fdd, &fdd, &fd[1], TRUE);
 	return (fd[0]);
 }
