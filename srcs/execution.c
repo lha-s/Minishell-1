@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 20:36:39 by musoufi           #+#    #+#             */
-/*   Updated: 2021/08/02 12:54:24 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/10 20:41:27 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	exec_cmd(t_token *token, t_shell **shell)
 		i++;
 	}
 	write_errors(2, token->cmd);
-	exit_prog(&token, FALSE);
+	exit_prog(&token, NULL, token->ret);
 }
 
 void	exec_cmd_fork(t_token *token, t_shell **shell)
@@ -102,15 +102,14 @@ void	exec_cmd_fork(t_token *token, t_shell **shell)
 	char **tab;
 	char **cmd;
 	struct stat buf;
-	pid_t pid;
 
 	i = 0;
 	cmd = build_cmd(token);
 	tab = bin(shell, cmd[0]);
-	pid = fork();
-	if (pid < 0)
+	g_sig.pid = fork();
+	if (g_sig.pid < 0)
 		ft_putstr_fd("fail\n", 2);
-	else if (!pid)
+	else if (!g_sig.pid)
 	{
 		while (tab[i])
 		{
@@ -119,7 +118,7 @@ void	exec_cmd_fork(t_token *token, t_shell **shell)
 			i++;
 		}
 		write_errors(2, token->cmd);
-		exit_prog(&token, FALSE);	
+		exit_prog(&token, NULL, token->ret);
 	}
-	wait(&pid);
+	wait(&g_sig.pid);
 }

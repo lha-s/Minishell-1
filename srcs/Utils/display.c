@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Display.c                                          :+:      :+:    :+:   */
+/*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:19:07 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/02 17:46:57 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/10 22:08:12 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ void	get_next_input(char **line)
 		safe_free(line);
 		*line = NULL;
 	}
-	*line = readline(prompt());
+	while (*line == NULL)
+	{
+		*line = readline(prompt());
+		ft_putstr_fd("\n", 1);
+	}
 	add_history(*line);
 }

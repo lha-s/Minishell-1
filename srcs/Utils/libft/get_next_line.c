@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 21:54:55 by allanganoun       #+#    #+#             */
-/*   Updated: 2021/08/09 09:44:32 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/10 20:36:24 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ int		get_next_line(int fd, char **line)
 
 	l = 1;
 	r = 0;
-	if(!(*line = ft_malloc(1)))
+	if(!(*line = malloc(1)))
 		return (-1);
 	(*line)[0] = 0;
 	while ((r = read(fd, &c, 1)) && l++ && c != '\n')
 	{
-		if(!(tmp = ft_malloc(l)))
+		if(!(tmp = malloc(l)))
 		{
 			free(*line);
 			return (0);

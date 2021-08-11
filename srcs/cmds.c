@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allanganoun <allanganoun@student.42.fr>    +#+  +:+       +#+        */
+/*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/08/08 21:21:44 by allanganoun      ###   ########.fr       */
+/*   Updated: 2021/08/10 21:30:55 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int run_process(t_token *token, t_shell **shell)
 	int fdd;
 
 	fdd = dup(0);
-	if (ft_strcmp(token->cmd, "exit") == 0 || token->cmd == NULL)
-		exit_prog(&token, TRUE);
+	if (ft_strcmp(token->cmd, "exit") == 0)
+		exit_cmd(token);
 	if (token->next == NULL)
 		execution(token, shell, FALSE);
 	else
@@ -40,7 +40,7 @@ int run_process(t_token *token, t_shell **shell)
 void		exec_builtin(t_token *token, t_shell **shell)
 {
 	if (ft_strcmp(token->cmd, "exit") == 0)
-		exit_prog(&token, FALSE);
+		exit_prog(&token, NULL, token->ret);
 	else if (ft_strcmp(token->cmd, "echo") == 0)
 		echo_process(token, (*shell)->env);
 	else if (ft_strcmp(token->cmd, "cd") == 0)
