@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 08:37:43 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/12 23:15:12 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/12 23:21:22 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,9 @@ int		main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	t_shell	*shell;
+
+	signal(SIGQUIT, sigint);
+	signal(SIGINT, sigint);
 	init_shell(env, &shell);
 	if (display_txt("banner.txt") == -1)
 		return (-1);
