@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 14:17:24 by musoufi           #+#    #+#             */
-/*   Updated: 2021/08/12 22:55:16 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/13 01:17:44 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	clean_redir(t_token *token, int savein, int saveout1, int saveout2)
 
 void	redir_dup2(int *tokenstd, int *save, int std)
 {
-	fprintf(stderr, "ici");
 	*save = dup(std);
 	close(std);
 	dup2(*tokenstd, std);
@@ -40,7 +39,6 @@ void	redir_dup(t_token *token, t_shell **shell, int pipe)
 	saveout1 = 0;
 	saveout2 = 0;
 
-	fprintf(stderr, "ici");
 	if (token->type == IN || token->type == INDEL)
 		redir_dup2(&token->std, &savein, 0);
 	if (token->type == TRUNC || token->type == APPEND)

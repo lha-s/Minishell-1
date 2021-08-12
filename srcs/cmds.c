@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/08/12 23:18:49 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/13 01:16:39 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,4 @@ void	execution(t_token *token, t_shell **shell, int pipe)
 		exec_cmd_fork(token, shell);
 	else
 		exec_builtin(token, shell);
-	safe_free(&token->cmd);
 }
