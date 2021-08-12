@@ -30,6 +30,7 @@ SRCS		= ./srcs/Utils/common_utils.c \
 				./srcs/piping.c \
 				./srcs/exit.c \
 				./srcs/signal.c \
+				./srcs/redirection.c \
 				./srcs/Built_ins/pwd.c \
 				./srcs/Built_ins/env.c \
 				./srcs/Built_ins/export.c \

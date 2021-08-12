@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/08 19:22:24 by musoufi           #+#    #+#             */
-/*   Updated: 2021/08/10 22:32:02 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/12 13:32:00 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	exit_cmd(t_token *token)
 		}
 		else if (token->arg[0] && ft_strisnum(token->arg[0]) != 0)
 			exit_prog(&token, "exit", ft_atoi(token->arg[0]));
-		else
-			exit_prog(&token, "exit", 0);
 	}
+	else
+		exit_prog(&token, "exit", 0);
 }

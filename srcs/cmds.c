@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 21:21:41 by musoufi           #+#    #+#             */
-/*   Updated: 2021/08/10 21:30:55 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/12 23:18:49 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,16 @@ int run_process(t_token *token, t_shell **shell)
 	if (ft_strcmp(token->cmd, "exit") == 0)
 		exit_cmd(token);
 	if (token->next == NULL)
-		execution(token, shell, FALSE);
-	else
+		choose(token, shell, FALSE);
+	while (token->next)
 	{
-		while ((token->next && token->next->operator &&
-		ft_strncmp(token->next->operator, "|", 2) == 0) || token->in)
+		while(token->out || token->in)
 		{
 			fdd = fork_process(token, shell, fdd);
+			if (token->in)
+				token->in -= 1;
 			if (token->out)
 				token = token->next->next;
-			else
-				break; //changer ça
 		}
 	}
 	close(fdd);
@@ -77,6 +76,14 @@ int		is_builtin(t_token *token)
 	else if (ft_strcmp(token->cmd, "minishell") == 0)
 		return (TRUE);
 	return (FALSE);
+}
+
+void	choose(t_token *token, t_shell **shell, int pipe)
+{
+	if (token->redir)
+		redirection(token, shell, pipe);
+	else
+		execution(token, shell, pipe);
 }
 
 void	execution(t_token *token, t_shell **shell, int pipe)

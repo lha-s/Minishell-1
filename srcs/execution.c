@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 20:36:39 by musoufi           #+#    #+#             */
-/*   Updated: 2021/08/10 20:41:27 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/12 13:25:08 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	exec_cmd(t_token *token, t_shell **shell)
 			execve(tab[i], cmd, (*shell)->env);
 		i++;
 	}
-	write_errors(2, token->cmd);
+	token->ret = fd_write_errors(token->cmd);
 	exit_prog(&token, NULL, token->ret);
 }
 
@@ -117,7 +117,7 @@ void	exec_cmd_fork(t_token *token, t_shell **shell)
 				execve(tab[i], cmd, (*shell)->env);
 			i++;
 		}
-		write_errors(2, token->cmd);
+		token->ret = fd_write_errors(token->cmd);
 		exit_prog(&token, NULL, token->ret);
 	}
 	wait(&g_sig.pid);

@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:54:52 by alganoun          #+#    #+#             */
-/*   Updated: 2021/08/11 00:44:52 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/12 21:13:18 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # include <fcntl.h>
 # include <string.h>
 # include <signal.h>
+# include <dirent.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include "../srcs/Utils/libft/libft.h"
@@ -48,6 +49,13 @@
 # define ID_UNSET 4
 # define ID_ENV 5
 # define ID_BIN 6
+
+# define TRUNC 1
+# define APPEND 2
+# define IN 3
+# define INDEL 4
+# define ERR 5
+# define PIPE 6
 
 typedef struct	s_sig
 {
@@ -74,7 +82,7 @@ typedef struct		s_token
 	struct s_token	*next;
 	int 			fd[2];
 	char			type;
-	char			std;
+	int				std;
 	char 			in;
 	char 			out;
 	int				ret;
@@ -112,8 +120,8 @@ void		pipechev_missing_space(char **str, char **tmp, int *i, int *j);
 /*------------DISPLAY---------------*/
 int			display_txt(char *str);
 ssize_t		write_output(char *str);
-int			write_exit();
 int			write_errors(int option, char *str);
+int			fd_write_errors(char *cmd);
 int			write_exec_errors();
 char 		*prompt(void);
 
@@ -144,6 +152,8 @@ int			fork_process(t_token *token, t_shell **shell, int fdd);
 void		execution(t_token *token, t_shell **shell, int pipe);
 void		exec_cmd(t_token *token, t_shell **shell);
 void		exec_cmd_fork(t_token *token, t_shell **shell);
+void		choose(t_token *token, t_shell **shell, int pipe);
+void		redirection(t_token *token, t_shell **shell, int pipe);
 
 /*------------SIGNAL&EXIT---------------*/
 void		exit_cmd(t_token *token);
