@@ -6,7 +6,7 @@
 /*   By: musoufi <musoufi@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 20:36:47 by musoufi           #+#    #+#             */
-/*   Updated: 2021/08/10 20:46:50 by musoufi          ###   ########lyon.fr   */
+/*   Updated: 2021/08/12 21:40:17 by musoufi          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	child(t_token *token, t_shell **shell, int fd[2], int *fdd)
 	pip(&in, fdd, fdd, FALSE);
 	if (token->next && strncmp(token->next->operator, "|", 2) == 0)
 		pip(&out, &fd[1], &fd[1], FALSE);
-	execution(token, shell, TRUE);
+	choose(token, shell, TRUE);
 }
 
 int			fork_process(t_token *token, t_shell **shell, int fdd)
@@ -58,7 +58,6 @@ int			fork_process(t_token *token, t_shell **shell, int fdd)
 	}
 	else if (!g_sig.pid)
 		child(token, shell, fd, &fdd);
-	//exit_status(&token);
 	wait(&g_sig.pid);
 	pip(&fdd, &fdd, &fd[1], TRUE);
 	return (fd[0]);

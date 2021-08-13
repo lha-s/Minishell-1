@@ -4,7 +4,7 @@ HEAD 		=	./includes/*.h
 
 INC			=	-I./includes/
 
-CC			=	gcc -g3
+CC			=	gcc
 
 FLAGS		=	-Wall -Wextra -Werror
 
@@ -30,6 +30,7 @@ SRCS		= ./srcs/Utils/common_utils.c \
 				./srcs/piping.c \
 				./srcs/exit.c \
 				./srcs/signal.c \
+				./srcs/redirection.c \
 				./srcs/Built_ins/pwd.c \
 				./srcs/Built_ins/env.c \
 				./srcs/Built_ins/export.c \
@@ -58,7 +59,7 @@ $(NAME): $(OBJ)
 
 process: $(OBJ)
 	@$(CC) $(FLAGS) $(INC) -lreadline -o $(NAME) $(OBJ) $(LIBFT)
-	#@make clean && echo "\033[0;32mMinishell compilation was succesfull.\033[0m"
+	@make clean && echo "\033[0;32mMinishell compilation was succesfull.\033[0m"
 
 %.o: %.c
 	@$(CC) $(FLAGS) $(INC) -o $@ -c $<
